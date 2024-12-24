@@ -5,8 +5,8 @@ plugins {
     id("com.google.devtools.ksp")
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.daggerHilt)
- //   id("com.google.gms.google-services")
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 
 }
 
@@ -26,11 +26,16 @@ android {
 
     buildTypes {
         release {
+            buildConfigField ("String", "API_KEY", "${project.findProperty("API_KEY")}")
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            buildConfigField ("String", "API_KEY", "${project.findProperty("API_KEY")}")
         }
     }
     compileOptions {
@@ -42,6 +47,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig=true
     }
 }
 
@@ -102,8 +108,17 @@ dependencies {
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.camera.extensions)
-    implementation("org.tensorflow:tensorflow-lite:2.11.0")
-    implementation("com.google.android.gms:play-services-gcm:17.0.0")
-    implementation ("com.google.mlkit:barcode-scanning:17.3.0")
-    implementation("com.google.maps.android:maps-compose:4.3.3")
+    implementation(libs.tensorflow.lite)
+    implementation(libs.play.services.gcm)
+    implementation (libs.barcode.scanning)
+
+    implementation(libs.coil.compose)
+
+    implementation(libs.retrofit2.retrofit)
+    implementation(libs.retrofit2.gson)
+    implementation(libs.okhttp3.okhttp)
+    implementation(libs.okhttp3.logging)
+
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 }

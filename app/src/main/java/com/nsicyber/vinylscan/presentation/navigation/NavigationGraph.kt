@@ -57,7 +57,6 @@ fun NavigationGraph(
             composable(route = Constants.Destination.CAMERA_SCREEN) {
                 CameraScreen(
                     applicationContext = applicationContext,
-                    onBackPressed = { navActions.popBackStack() }
                 )
             }
 

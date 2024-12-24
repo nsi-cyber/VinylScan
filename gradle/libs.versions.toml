@@ -2,6 +2,7 @@
 accompanistPermissions = "0.32.0"
 accompanistSwiperefresh = "0.35.1-alpha"
 agp = "8.3.2"
+barcodeScanning = "17.3.0"
 coilCompose = "2.6.0"
 compiler = "1.1.1"
 datastorePreferences = "1.1.1"
@@ -24,6 +25,7 @@ composeBom = "2024.11.00"
 hilt = "2.51.1"
 lottieCompose = "5.2.0"
 playServicesBase = "18.5.0"
+playServicesGcm = "17.0.0"
 playServicesMlkitFaceDetection = "17.1.0"
 playServicesTfliteJava = "16.3.0"
 retrofit2 = "2.11.0"
@@ -34,6 +36,7 @@ roomCommon = "2.6.1"
 roomCompiler = "2.6.1"
 roomKtx = "2.6.1"
 startupRuntime = "1.1.1"
+tensorflowLite = "2.11.0"
 workRuntimeKtx = "2.9.0"
 hiltWork = "1.2.0"
 firebaseDatabaseKtx = "21.0.0"
@@ -57,6 +60,7 @@ androidx-datastore-preferences = { module = "androidx.datastore:datastore-prefer
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "startupRuntime" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
+barcode-scanning = { module = "com.google.mlkit:barcode-scanning", version.ref = "barcodeScanning" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 compiler = { module = "android.arch.persistence.room:compiler", version.ref = "compiler" }
 face-detection = { module = "com.google.mlkit:face-detection", version.ref = "faceDetection" }
@@ -84,6 +88,7 @@ dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compi
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 play-services-base = { module = "com.google.android.gms:play-services-base", version.ref = "playServicesBase" }
+play-services-gcm = { module = "com.google.android.gms:play-services-gcm", version.ref = "playServicesGcm" }
 play-services-mlkit-face-detection = { module = "com.google.android.gms:play-services-mlkit-face-detection", version.ref = "playServicesMlkitFaceDetection" }
 play-services-tflite-java = { module = "com.google.android.gms:play-services-tflite-java", version.ref = "playServicesTfliteJava" }
 retrofit2-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
@@ -104,12 +109,16 @@ firebase-config-ktx = { group = "com.google.firebase", name = "firebase-config-k
 google-firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtxVersion" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "cameraCore" }
+tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite" }
 vision-common = { group = "com.google.mlkit", name = "vision-common", version.ref = "visionCommon" }
 androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraView" }
 androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraView" }
 androidx-camera-extensions = { module = "androidx.camera:camera-extensions", version.ref = "cameraView" }
 androidx-camera-video = { module = "androidx.camera:camera-video", version.ref = "cameraView" }
 androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraView" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
