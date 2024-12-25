@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
 
     alias(libs.plugins.androidApplication)
@@ -18,15 +20,21 @@ android {
         applicationId = "com.nsicyber.vinylscan"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = 3
+        versionName = "0.1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { localProperties.load(it) }
+    }
+    val apiKey = localProperties.getProperty("API_KEY") ?: ""
 
     buildTypes {
         release {
-            buildConfigField ("String", "API_KEY", "${project.findProperty("API_KEY")}")
+            buildConfigField("String", "API_KEY", "\"$apiKey\"")
 
             isMinifyEnabled = false
             proguardFiles(
@@ -35,7 +43,7 @@ android {
             )
         }
         debug {
-            buildConfigField ("String", "API_KEY", "${project.findProperty("API_KEY")}")
+            buildConfigField("String", "API_KEY", "\"$apiKey\"")
         }
     }
     compileOptions {
