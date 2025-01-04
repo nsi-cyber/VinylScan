@@ -8,10 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.mlkit.vision.common.InputImage
 import com.nsicyber.vinylscan.common.ApiResult
-import com.nsicyber.vinylscan.domain.mapFunc.toAlbumModel
+import com.nsicyber.vinylscan.domain.useCases.GetAlbumDetailUseCase
 import com.nsicyber.vinylscan.domain.useCases.GetDetailUseCase
 import com.nsicyber.vinylscan.domain.useCases.RecognizeBarcodeUseCase
 import com.nsicyber.vinylscan.domain.useCases.SearchBarcodeUseCase
+import com.nsicyber.vinylscan.domain.useCases.SearchUseCase
 import com.nsicyber.vinylscan.presentation.components.BaseViewModel
 import com.nsicyber.vinylscan.presentation.components.SnackbarController
 import com.nsicyber.vinylscan.presentation.components.SnackbarEvent
@@ -32,6 +33,8 @@ class CameraViewModel @Inject constructor(
     private val recognizeBarcodeUseCase: RecognizeBarcodeUseCase,
     private val getDetailUseCase: GetDetailUseCase,
     private val searchBarcodeUseCase: SearchBarcodeUseCase,
+    private val searchUseCase: SearchUseCase,
+    private val getAlbumDetailUseCase: GetAlbumDetailUseCase,
 
     ) : BaseViewModel() {
 
@@ -48,7 +51,14 @@ class CameraViewModel @Inject constructor(
             )
 
             CameraEvent.SetStateEmpty -> {
-                updateUiState { copy(onSuccess = false, isPageLoading = false, albumDetail = null) }
+                updateUiState {
+                    copy(
+                        onSuccess = false,
+                        isPageLoading = false,
+                        deezerAlbumDetail = null,
+                        discogsAlbumDetail = null
+                    )
+                }
             }
         }
     }
@@ -61,7 +71,7 @@ class CameraViewModel @Inject constructor(
                     imageProxy.image!!,
                     imageProxy.imageInfo.rotationDegrees
                 )
-                if (cameraState.value.isPageLoading == false&&cameraState.value.albumDetail==null) {
+                if (cameraState.value.isPageLoading == false && cameraState.value.deezerAlbumDetail == null && cameraState.value.discogsAlbumDetail == null) {
                     recognizeBarcodeUseCase(inputImage).collect { result ->
                         result.fold(
                             onSuccess = { barcode ->
@@ -93,7 +103,7 @@ class CameraViewModel @Inject constructor(
                     updateUiState {
                         copy(
                             isPageLoading = true,
-                            albumDetail = null,
+                            deezerAlbumDetail = null,
                             onSuccess = false
                         )
                     }
@@ -111,11 +121,13 @@ class CameraViewModel @Inject constructor(
                         }
 
 
-                        is ApiResult.Success ->
-                            getData(
+                        is ApiResult.Success -> {
+                            searchAlbum(
+                                query = result.data?.results?.firstOrNull()?.title,
                                 masterId = result.data?.results?.firstOrNull()?.master_id,
-                                thumbnail = result.data?.results?.firstOrNull()?.cover_image
+                                thumbnail = result?.data?.results?.firstOrNull()?.cover_image
                             )
+                        }
 
                         null -> {
 
@@ -127,7 +139,7 @@ class CameraViewModel @Inject constructor(
             updateUiState {
                 copy(
                     isPageLoading = false,
-                    onSuccess = false, albumDetail = null
+                    onSuccess = false, deezerAlbumDetail = null
                 )
             }
         }
@@ -135,13 +147,15 @@ class CameraViewModel @Inject constructor(
 
     }
 
-    private fun getData(
+
+    private fun searchAlbum(
+        query: String?,
         masterId: Int?,
         thumbnail: String?
     ) {
-        masterId?.let {
+        query.takeIf { !it.isNullOrEmpty() }?.let {
             viewModelScope.launch {
-                getDetailUseCase(masterId).onStart {
+                searchUseCase(query).onStart {
                     updateUiState { copy(isPageLoading = true) }
                 }.onEach { result ->
 
@@ -156,14 +170,14 @@ class CameraViewModel @Inject constructor(
                         }
 
 
-                        is ApiResult.Success ->
-                            updateUiState {
-                                copy(
-                                    isPageLoading = false,
-                                    onSuccess = true,
-                                    albumDetail = result.data.toAlbumModel(thumbnail),
-                                )
+                        is ApiResult.Success -> {
+
+                            if (result.data?.data.isNullOrEmpty()) {
+                                getAlbumDiscogsDetail(masterId = masterId, thumbnail = thumbnail)
+                            } else {
+                                getAlbumDeezerDetail(result.data?.data?.firstOrNull()?.id)
                             }
+                        }
 
                         null -> {
 
@@ -172,12 +186,96 @@ class CameraViewModel @Inject constructor(
                     }
                 }.launchIn(this)
             }
-        }?:run {      updateUiState {
-            copy(
-                isPageLoading = false,
-                onSuccess = false, albumDetail = null
-            )
-        } }
+        } ?: run {
+            updateUiState {
+                copy(
+                    isPageLoading = false,
+                    onSuccess = false, deezerAlbumDetail = null
+                )
+            }
+        }
+
+
+    }
+
+
+    private fun getAlbumDeezerDetail(
+        id: String?,
+    ) {
+
+        viewModelScope.launch {
+            getAlbumDetailUseCase(id).onStart {
+                updateUiState { copy(isPageLoading = true) }
+            }.onEach { result ->
+
+                when (result) {
+                    is ApiResult.Error -> {
+                        showErrorMessage(this@CameraViewModel, result.message)
+                        updateUiState {
+                            copy(
+                                isPageLoading = false,
+                            )
+                        }
+                    }
+
+
+                    is ApiResult.Success ->
+                        updateUiState {
+                            copy(
+                                isPageLoading = false,
+                                onSuccess = true,
+                                deezerAlbumDetail = result.data,
+                            )
+                        }
+
+                    null -> {
+
+
+                    }
+                }
+            }.launchIn(this)
+        }
+
+
+    }
+
+    private fun getAlbumDiscogsDetail(
+        masterId: Int?,
+        thumbnail: String?
+    ) {
+
+        viewModelScope.launch {
+            getDetailUseCase(masterId).onStart {
+                updateUiState { copy(isPageLoading = true) }
+            }.onEach { result ->
+
+                when (result) {
+                    is ApiResult.Error -> {
+                        showErrorMessage(this@CameraViewModel, result.message)
+                        updateUiState {
+                            copy(
+                                isPageLoading = false,
+                            )
+                        }
+                    }
+
+
+                    is ApiResult.Success ->
+                        updateUiState {
+                            copy(
+                                isPageLoading = false,
+                                onSuccess = true,
+                                discogsAlbumDetail = result.data?.copy(thumbnail = thumbnail),
+                            )
+                        }
+
+                    null -> {
+
+
+                    }
+                }
+            }.launchIn(this)
+        }
 
 
     }

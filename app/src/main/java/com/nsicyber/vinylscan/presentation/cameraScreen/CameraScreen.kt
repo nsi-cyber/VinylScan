@@ -8,23 +8,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetValue
@@ -32,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -43,24 +37,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
-import com.nsicyber.vinylscan.domain.model.AlbumModel
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import com.nsicyber.vinylscan.presentation.MediaPlayerViewModel
 import com.nsicyber.vinylscan.presentation.components.BaseView
+import com.nsicyber.vinylscan.presentation.components.DeezerAlbumDetailBottomSheet
+import com.nsicyber.vinylscan.presentation.components.DiscogsAlbumDetailBottomSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CameraScreen(
     cameraViewModel: CameraViewModel = hiltViewModel(),
+    mediaPlayerViewModel: MediaPlayerViewModel = hiltViewModel(),
     applicationContext: Context,
 ) {
     val scope = rememberCoroutineScope()
@@ -82,9 +77,6 @@ fun CameraScreen(
         }
     )
 
-    LaunchedEffect(key1 = true) {
-        launcher.launch(Manifest.permission.CAMERA)
-    }
 
     val bottomSheetState: BottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(
@@ -108,22 +100,62 @@ fun CameraScreen(
     }
 
     val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val lifecycleObserver = object : DefaultLifecycleObserver {
+            override fun onStart(owner: LifecycleOwner) {
+            }
+
+            override fun onResume(owner: LifecycleOwner) {
+            }
+
+            override fun onPause(owner: LifecycleOwner) {
+                mediaPlayerViewModel.pauseMediaPlayer()
+            }
+
+            override fun onStop(owner: LifecycleOwner) {
+                mediaPlayerViewModel.pauseMediaPlayer()
+
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
+        }
+    }
+
+
+    LaunchedEffect(key1 = true) {
+        launcher.launch(Manifest.permission.CAMERA)
+    }
 
     LaunchedEffect(state.onSuccess) {
-        if (state.onSuccess == true && state.albumDetail != null) {
+        if (state.onSuccess && (state.deezerAlbumDetail != null || state.discogsAlbumDetail != null)) {
             bottomSheetState.bottomSheetState.expand()
         }
     }
 
     LaunchedEffect(bottomSheetState.bottomSheetState.currentValue) {
-        if (bottomSheetState.bottomSheetState.currentValue == SheetValue.PartiallyExpanded && state.albumDetail != null)
+        if (bottomSheetState.bottomSheetState.currentValue == SheetValue.PartiallyExpanded
+            && (state.deezerAlbumDetail != null || state.discogsAlbumDetail != null)
+        ) {
             cameraViewModel.onEvent(CameraEvent.SetStateEmpty)
+            mediaPlayerViewModel.stopMediaPlayer()
+        }
     }
 
     BaseView(
         bottomSheetState = bottomSheetState,
         bottomSheetContent = {
-            AlbumDetailBottomSheet(data = state.albumDetail)
+            if (state.deezerAlbumDetail != null && state.discogsAlbumDetail == null) {
+                DeezerAlbumDetailBottomSheet(data = state.deezerAlbumDetail, mediaPlayerViewModel)
+            } else if (state.deezerAlbumDetail == null && state.discogsAlbumDetail != null) {
+                DiscogsAlbumDetailBottomSheet(data = state.discogsAlbumDetail)
+
+            }
+
+
         },
         viewModel = cameraViewModel,
         isPageLoading = state.isPageLoading,
@@ -145,21 +177,30 @@ fun CameraScreen(
 
                 Box(modifier = Modifier.fillMaxSize()) {
                     Column(
-                        modifier = Modifier  .clip(
-                            RoundedCornerShape(20.dp)
-                        ).align(Alignment.Center)
+                        modifier = Modifier
+                            .clip(
+                                RoundedCornerShape(20.dp)
+                            )
+                            .align(Alignment.Center)
                             .background(Color.Gray.copy(alpha = 0.5f))
-                          .padding(32.dp),
+                            .padding(32.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                            repeat(40){
-                                Box(modifier = Modifier.height(50.dp).width(2.dp).background(Color.Black))
+                            repeat(40) {
+                                Box(
+                                    modifier = Modifier
+                                        .height(50.dp)
+                                        .width(2.dp)
+                                        .background(Color.Black)
+                                )
                             }
                         }
-                        Text(text = "Scan vinyl barcode...", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 22.sp))
-
+                        Text(
+                            text = "Scan vinyl barcode...",
+                            style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                        )
 
                     }
                 }
@@ -169,120 +210,4 @@ fun CameraScreen(
 }
 
 
-@Composable
-fun AlbumDetailBottomSheet(
-    data: AlbumModel?,
-) {
-    Column(
-        modifier = Modifier.verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        AsyncImage(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f),
-            model = data?.imageUrl,
-            contentDescription = ""
-        )
 
-
-        Column(modifier = Modifier.padding(start = 16.dp)) {
-            Text(
-                text = data?.name.orEmpty(),
-                color = Color.White,
-                fontSize = 28.sp,
-                textAlign = TextAlign.Start,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Text(
-                lineHeight = 24.sp,
-                text = data?.artistName.orEmpty(),
-                color = Color.Gray,
-                fontSize = 22.sp,
-                textAlign = TextAlign.Start,
-                fontWeight = FontWeight.Normal,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-
-        Text(
-            modifier = Modifier.padding(start = 16.dp),
-            text = data?.year.toString(),
-            color = Color.White,
-            fontSize = 28.sp,
-            textAlign = TextAlign.Start,
-            fontWeight = FontWeight.Bold,
-        )
-
-
-        Column(modifier = Modifier.padding(start = 16.dp)) {
-            Text(
-                text = data?.genres?.joinToString(", ").orEmpty(),
-                color = Color.White,
-                fontSize = 28.sp,
-                textAlign = TextAlign.Start,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Text(
-                lineHeight = 24.sp,
-                text = data?.styles?.joinToString(", ").orEmpty(),
-                color = Color.Gray,
-                fontSize = 22.sp,
-                textAlign = TextAlign.Start,
-                fontWeight = FontWeight.Normal,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-
-        repeat(data?.tracks?.size ?: 0) { trackIndex ->
-            Column(modifier = Modifier.padding(start = 16.dp)) {
-                Text(
-                    text = data?.tracks?.get(trackIndex)?.title.orEmpty(),
-                    color = Color.White,
-                    fontSize = 22.sp,
-                    textAlign = TextAlign.Start,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Text(
-                    lineHeight = 24.sp,
-                    text = data?.tracks?.get(trackIndex)?.duration.orEmpty(),
-                    color = Color.Gray,
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Start,
-                    fontWeight = FontWeight.Normal,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-
-        }
-    }
-}
-
-
-@Composable
-fun CustomButton(modifier: Modifier, icon: Int, onClick: () -> Unit) {
-
-
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .clickable { onClick() }
-            .background(Color.White)
-
-            .size(64.dp)
-            .padding(12.dp)
-    ) {
-
-
-        Image(
-            modifier = Modifier.fillMaxSize(),
-            painter = painterResource(icon),
-            contentDescription = "",
-            colorFilter = ColorFilter.tint(Color.Black)
-        )
-
-    }
-}

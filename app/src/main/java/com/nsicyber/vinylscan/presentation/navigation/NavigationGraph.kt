@@ -1,18 +1,14 @@
 package com.nsicyber.vinylscan.presentation.navigation
 
 import android.content.Context
-import android.content.pm.PackageManager
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.core.content.ContextCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -31,8 +27,7 @@ fun NavigationGraph(
         NavigationActions(navController)
     },
 
-) {
-
+    ) {
 
 
     val isMenuShow = remember { mutableStateOf(false) }

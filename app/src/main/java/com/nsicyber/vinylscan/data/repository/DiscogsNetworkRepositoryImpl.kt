@@ -2,17 +2,17 @@ package com.nsicyber.vinylscan.data.repository
 
 import com.nsicyber.vinylscan.common.ApiResult
 import com.nsicyber.vinylscan.common.apiFlow
-import com.nsicyber.vinylscan.data.model.response.getDetail.GetDetailResponse
-import com.nsicyber.vinylscan.data.model.response.getSearch.GetSearchResponse
-import com.nsicyber.vinylscan.data.remote.ApiService
-import com.nsicyber.vinylscan.domain.repository.NetworkRepository
+import com.nsicyber.vinylscan.data.model.response.discogs.getDetail.GetDetailResponse
+import com.nsicyber.vinylscan.data.model.response.discogs.getSearch.GetSearchResponse
+import com.nsicyber.vinylscan.data.remote.DiscogsApiService
+import com.nsicyber.vinylscan.domain.repository.DiscogsNetworkRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
-class NetworkRepositoryImpl @Inject constructor(
-    private val api: ApiService,
-) : NetworkRepository {
+class DiscogsNetworkRepositoryImpl @Inject constructor(
+    private val api: DiscogsApiService,
+) : DiscogsNetworkRepository {
 
 
     override fun searchBarcode(

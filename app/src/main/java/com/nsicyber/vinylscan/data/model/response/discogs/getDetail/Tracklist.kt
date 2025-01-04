@@ -1,4 +1,4 @@
-package com.nsicyber.vinylscan.data.model.response.getDetail
+package com.nsicyber.vinylscan.data.model.response.discogs.getDetail
 
 data class Tracklist(
     val duration: String?,

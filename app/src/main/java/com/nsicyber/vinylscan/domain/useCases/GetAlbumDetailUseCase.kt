@@ -1,22 +1,22 @@
 package com.nsicyber.vinylscan.domain.useCases
 
 import com.nsicyber.vinylscan.common.ApiResult
-import com.nsicyber.vinylscan.data.model.response.discogs.getDetail.GetDetailResponse
-import com.nsicyber.vinylscan.domain.repository.DiscogsNetworkRepository
+import com.nsicyber.vinylscan.data.model.response.deezer.getAlbumDetail.GetAlbumDetailResponse
+import com.nsicyber.vinylscan.domain.repository.DeezerNetworkRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 
-class GetDetailUseCase
+class GetAlbumDetailUseCase
 @Inject
 constructor(
-    private val repo: DiscogsNetworkRepository,
+    private val repo: DeezerNetworkRepository,
 ) {
-    operator fun invoke(masterId: Int?): Flow<ApiResult<GetDetailResponse?>?> =
+    operator fun invoke(albumId: String?): Flow<ApiResult<GetAlbumDetailResponse?>?> =
         flow {
             try {
-                repo.getDetail(masterId).collect { result ->
+                repo.getDetail(albumId = albumId).collect { result ->
                     emit(result)
                 }
             } catch (e: Exception) {

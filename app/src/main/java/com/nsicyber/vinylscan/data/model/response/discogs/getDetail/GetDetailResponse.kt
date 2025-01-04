@@ -1,4 +1,4 @@
-package com.nsicyber.vinylscan.data.model.response.getDetail
+package com.nsicyber.vinylscan.data.model.response.discogs.getDetail
 
 data class GetDetailResponse(
     val artists: List<Artist?>?,
@@ -9,6 +9,7 @@ data class GetDetailResponse(
 
     val styles: List<String?>?,
     val title: String?,
+    val thumbnail: String?,
     val tracklist: List<Tracklist?>?,
     val year: Int?
 )

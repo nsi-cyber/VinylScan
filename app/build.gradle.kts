@@ -20,8 +20,8 @@ android {
         applicationId = "com.nsicyber.vinylscan"
         minSdk = 26
         targetSdk = 35
-        versionCode = 4
-        versionName = "0.1.2"
+        versionCode = 5
+        versionName = "0.1.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,6 +41,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
         debug {
             buildConfigField("String", "API_KEY", "\"$apiKey\"")
@@ -55,7 +56,7 @@ android {
     }
     buildFeatures {
         compose = true
-        buildConfig=true
+        buildConfig = true
     }
 }
 
@@ -108,7 +109,7 @@ dependencies {
     implementation(libs.androidx.startup.runtime)
     implementation(libs.lottie.compose)
     implementation(kotlin("reflect"))
-    implementation (libs.accompanist.permissions)
+    implementation(libs.accompanist.permissions)
     implementation(libs.geofirestore.android)
     implementation(libs.face.detection)
     implementation(libs.androidx.camera.core)
@@ -118,7 +119,7 @@ dependencies {
     implementation(libs.androidx.camera.extensions)
     implementation(libs.tensorflow.lite)
     implementation(libs.play.services.gcm)
-    implementation (libs.barcode.scanning)
+    implementation(libs.barcode.scanning)
 
     implementation(libs.coil.compose)
 

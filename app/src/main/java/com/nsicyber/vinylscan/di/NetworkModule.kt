@@ -1,11 +1,11 @@
 package com.nsicyber.vinylscan.di
 
-import com.google.mlkit.vision.barcode.BarcodeScanner
-import com.nsicyber.vinylscan.data.remote.ApiService
-import com.nsicyber.vinylscan.data.repository.MlKitRepositoryImpl
-import com.nsicyber.vinylscan.data.repository.NetworkRepositoryImpl
-import com.nsicyber.vinylscan.domain.repository.MlKitRepository
-import com.nsicyber.vinylscan.domain.repository.NetworkRepository
+import com.nsicyber.vinylscan.data.remote.DeezerApiService
+import com.nsicyber.vinylscan.data.remote.DiscogsApiService
+import com.nsicyber.vinylscan.data.repository.DeezerNetworkRepositoryImpl
+import com.nsicyber.vinylscan.data.repository.DiscogsNetworkRepositoryImpl
+import com.nsicyber.vinylscan.domain.repository.DeezerNetworkRepository
+import com.nsicyber.vinylscan.domain.repository.DiscogsNetworkRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,16 +42,30 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApiService(okHttpClient: OkHttpClient): ApiService =
+    fun provideDiscogsApiService(okHttpClient: OkHttpClient): DiscogsApiService =
         Retrofit.Builder().baseUrl("https://api.discogs.com")
             .addConverterFactory(GsonConverterFactory.create()).client(okHttpClient).build()
-            .create(ApiService::class.java)
+            .create(DiscogsApiService::class.java)
 
 
     @Provides
     @Singleton
-    fun provideNetworkRepository(apiService: ApiService): NetworkRepository {
-        return NetworkRepositoryImpl(apiService)
+    fun provideNetworkRepository(discogsApiService: DiscogsApiService): DiscogsNetworkRepository {
+        return DiscogsNetworkRepositoryImpl(discogsApiService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeezerApiService(okHttpClient: OkHttpClient): DeezerApiService =
+        Retrofit.Builder().baseUrl("https://api.deezer.com")
+            .addConverterFactory(GsonConverterFactory.create()).client(okHttpClient).build()
+            .create(DeezerApiService::class.java)
+
+
+    @Provides
+    @Singleton
+    fun provideDeezerNetworkRepository(deezerApiService: DeezerApiService): DeezerNetworkRepository {
+        return DeezerNetworkRepositoryImpl(deezerApiService)
     }
 
 

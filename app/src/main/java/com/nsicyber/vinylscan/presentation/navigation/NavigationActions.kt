@@ -9,7 +9,6 @@ import com.nsicyber.vinylscan.common.Constants
 class NavigationActions(private val navController: NavHostController) {
 
 
-
     fun navigateToCameraScreen() {
         navController.navigate(Constants.Destination.CAMERA_SCREEN) {
             popUpToTop(navController)
@@ -24,7 +23,7 @@ class NavigationActions(private val navController: NavHostController) {
 
 }
 
-fun NavOptionsBuilder.popUpToTop(navController: NavController, clean:Boolean=false) {
+fun NavOptionsBuilder.popUpToTop(navController: NavController, clean: Boolean = false) {
     popUpTo(navController.currentBackStackEntry?.destination?.route ?: return) {
         inclusive = clean
     }

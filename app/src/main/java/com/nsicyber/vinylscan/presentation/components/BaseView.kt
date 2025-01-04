@@ -131,13 +131,7 @@ fun BaseView(
                         )
                 ) {
 
-                    if (bottomSheetState.bottomSheetState.targetValue == SheetValue.Expanded) {
-                        Box(
-                            Modifier
-                                .fillMaxSize()
-                                .background(Color.Gray)
-                        )
-                    }
+
                 }
 
             }
