@@ -27,6 +27,10 @@ class MediaPlayerViewModel @Inject constructor(private var mediaPlayerRepository
         mediaPlayerRepository.dispose()
     }
 
+    fun onFinish(onFinish: () -> Unit) {
+        mediaPlayerRepository.onFinish { onFinish() }
+    }
+
     fun pauseMediaPlayer() = mediaPlayerRepository.pause()
 
 }

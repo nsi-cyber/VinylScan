@@ -12,6 +12,10 @@ interface DiscogsNetworkRepository {
         barcode: String?,
     ): Flow<ApiResult<GetSearchResponse?>?>
 
+    fun searchVinyl(
+        query: String?,
+    ): Flow<ApiResult<GetSearchResponse?>?>
+
     fun getDetail(
         masterId: Int?,
     ): Flow<ApiResult<GetDetailResponse?>?>

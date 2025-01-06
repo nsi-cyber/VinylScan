@@ -3,7 +3,9 @@ package com.nsicyber.vinylscan.presentation.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
+import com.google.gson.Gson
 import com.nsicyber.vinylscan.common.Constants
+import com.nsicyber.vinylscan.domain.model.VinylModel
 
 
 class NavigationActions(private val navController: NavHostController) {
@@ -11,6 +13,16 @@ class NavigationActions(private val navController: NavHostController) {
 
     fun navigateToCameraScreen() {
         navController.navigate(Constants.Destination.CAMERA_SCREEN) {
+            popUpToTop(navController)
+        }
+    }
+    fun navigateToSearchScreen() {
+        navController.navigate(Constants.Destination.SEARCH_SCREEN) {
+            popUpToTop(navController)
+        }
+    }
+    fun navigateToDetailScreen() {
+        navController.navigate(Constants.Destination.DETAIL_SCREEN) {
             popUpToTop(navController)
         }
     }

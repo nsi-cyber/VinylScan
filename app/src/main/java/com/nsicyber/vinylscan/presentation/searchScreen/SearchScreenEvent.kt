@@ -1,0 +1,9 @@
+package com.nsicyber.vinylscan.presentation.searchScreen
+
+sealed class SearchScreenEvent {
+
+    data object SetStateEmpty : SearchScreenEvent()
+    data class Search(val query: String) : SearchScreenEvent()
+    data class OpenDetail(val index: Int) : SearchScreenEvent()
+
+}

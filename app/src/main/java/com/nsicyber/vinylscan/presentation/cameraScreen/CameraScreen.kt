@@ -1,29 +1,34 @@
 package com.nsicyber.vinylscan.presentation.cameraScreen
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.hardware.camera2.CameraManager
+import android.view.WindowManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomSheetScaffoldState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -37,26 +42,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import com.nsicyber.vinylscan.presentation.MediaPlayerViewModel
+import com.nsicyber.vinylscan.R
+import com.nsicyber.vinylscan.domain.model.VinylModel
 import com.nsicyber.vinylscan.presentation.components.BaseView
-import com.nsicyber.vinylscan.presentation.components.DeezerAlbumDetailBottomSheet
-import com.nsicyber.vinylscan.presentation.components.DiscogsAlbumDetailBottomSheet
+import com.nsicyber.vinylscan.presentation.components.LottieView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CameraScreen(
     cameraViewModel: CameraViewModel = hiltViewModel(),
-    mediaPlayerViewModel: MediaPlayerViewModel = hiltViewModel(),
     applicationContext: Context,
+    navigateToDetail: (data:VinylModel?) -> Unit,
+    navigateToSearch: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val state by cameraViewModel.cameraState.collectAsState()
@@ -76,14 +85,15 @@ fun CameraScreen(
             hasCamPermission = granted
         }
     )
+    val context = LocalContext.current
+    DisposableEffect(Unit) {
+        val window = (context as? Activity)?.window
+        window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-
-    val bottomSheetState: BottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberStandardBottomSheetState(
-            initialValue = SheetValue.Hidden,
-            skipHiddenState = false
-        ),
-    )
+        onDispose {
+            window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
+    }
 
     val controller = remember {
         LifecycleCameraController(applicationContext).apply {
@@ -100,63 +110,23 @@ fun CameraScreen(
     }
 
     val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
-        val lifecycleObserver = object : DefaultLifecycleObserver {
-            override fun onStart(owner: LifecycleOwner) {
-            }
 
-            override fun onResume(owner: LifecycleOwner) {
-            }
+    LaunchedEffect(state.onSuccess) {
+        if (state.onSuccess && state.vinylModel != null) {
+            navigateToDetail(state.vinylModel)
 
-            override fun onPause(owner: LifecycleOwner) {
-                mediaPlayerViewModel.pauseMediaPlayer()
-            }
-
-            override fun onStop(owner: LifecycleOwner) {
-                mediaPlayerViewModel.pauseMediaPlayer()
-
-            }
-        }
-
-        lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
-
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
         }
     }
-
 
     LaunchedEffect(key1 = true) {
         launcher.launch(Manifest.permission.CAMERA)
     }
 
-    LaunchedEffect(state.onSuccess) {
-        if (state.onSuccess && (state.deezerAlbumDetail != null || state.discogsAlbumDetail != null)) {
-            bottomSheetState.bottomSheetState.expand()
-        }
-    }
 
-    LaunchedEffect(bottomSheetState.bottomSheetState.currentValue) {
-        if (bottomSheetState.bottomSheetState.currentValue == SheetValue.PartiallyExpanded
-            && (state.deezerAlbumDetail != null || state.discogsAlbumDetail != null)
-        ) {
-            cameraViewModel.onEvent(CameraEvent.SetStateEmpty)
-            mediaPlayerViewModel.stopMediaPlayer()
-        }
-    }
+
 
     BaseView(
-        bottomSheetState = bottomSheetState,
-        bottomSheetContent = {
-            if (state.deezerAlbumDetail != null && state.discogsAlbumDetail == null) {
-                DeezerAlbumDetailBottomSheet(data = state.deezerAlbumDetail, mediaPlayerViewModel)
-            } else if (state.deezerAlbumDetail == null && state.discogsAlbumDetail != null) {
-                DiscogsAlbumDetailBottomSheet(data = state.discogsAlbumDetail)
 
-            }
-
-
-        },
         viewModel = cameraViewModel,
         isPageLoading = state.isPageLoading,
         content = {
@@ -175,15 +145,21 @@ fun CameraScreen(
                     )
                 }
 
+
                 Box(modifier = Modifier.fillMaxSize()) {
+                    var columnSize by remember { mutableStateOf(IntSize.Zero) }
+
                     Column(
                         modifier = Modifier
-                            .clip(
-                                RoundedCornerShape(20.dp)
-                            )
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .clip(RoundedCornerShape(20.dp))
                             .align(Alignment.Center)
-                            .background(Color.Gray.copy(alpha = 0.5f))
-                            .padding(32.dp),
+                            .background(Color.White.copy(alpha = 0.7f))
+                            .padding(32.dp)
+                            .onGloballyPositioned { layoutCoordinates ->
+                                columnSize = layoutCoordinates.size
+                            },
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
@@ -198,13 +174,48 @@ fun CameraScreen(
                             }
                         }
                         Text(
-                            text = "Scan vinyl barcode...",
-                            style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                            text = stringResource(R.string.scan_vinyl_barcode),
+                            style = TextStyle(fontWeight = FontWeight.Normal, fontSize = 22.sp, color = Color.Black)
                         )
-
                     }
-                }
-            }
+
+                    Box(
+                        modifier = Modifier.align(Alignment.Center)
+                    ) {
+                        LottieView(
+                            modifier = Modifier
+                                .size(
+                                    columnSize.width.dp,
+                                    columnSize.height.dp
+                                )
+                                .padding(20.dp),
+                            res = R.raw.scan_anim
+                        )
+                    }
+
+
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .padding(16.dp)
+                            .clip(
+                                RoundedCornerShape(20.dp)
+                            )
+
+                            .background(Color.White.copy(alpha = 0.7f))
+
+                            .clickable { navigateToSearch() }
+                            .padding(12.dp)
+                    ) {
+                        Image(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = ""
+                        )
+                        Text(text = stringResource(R.string.search_vinyls), color = Color.Black)
+                    }
+
+
+                }            }
         }
     )
 }

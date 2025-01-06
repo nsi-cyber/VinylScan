@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">VinylScan</string>
+    <string name="app_name">Scan Vinyl</string>
+    <string name="genre">Genre</string>
+    <string name="year">Year</string>
+    <string name="style">Style</string>
+    <string name="show_barcode">Show Barcode</string>
+    <string name="scan_vinyl_barcode">Scan vinyl barcode...</string>
+    <string name="search_vinyls">Search Vinyls...</string>
 </resources>

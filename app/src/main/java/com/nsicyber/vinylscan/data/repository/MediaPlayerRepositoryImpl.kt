@@ -34,7 +34,15 @@ class MediaPlayerRepositoryImpl @Inject constructor() : MediaPlayerRepository {
                 MediaPlayer.MEDIA_INFO_BUFFERING_END -> isBuffering = false
             }
         }
+
     }
+
+    override fun onFinish(onFinish: () -> Unit) {
+        mediaPlayer.setOnCompletionListener {
+            onFinish()
+        }
+    }
+
 
     override fun stop() {
         mediaPlayer.reset()

@@ -19,7 +19,14 @@ interface DiscogsApiService {
         @Query("per_page") per_page: Int = 1,
         @Query("page") page: Int = 1,
         @Query("token") token: String = BuildConfig.API_KEY,
+        ): Response<GetSearchResponse?>?
 
+    @GET(Constants.Endpoints.Discogs.SEARCH)
+    suspend fun searchVinyl(
+        @Query("query") query: String?,
+        @Query("per_page") per_page: Int = 15,
+        @Query("page") page: Int = 1,
+        @Query("token") token: String = BuildConfig.API_KEY,
         ): Response<GetSearchResponse?>?
 
     @GET(Constants.Endpoints.Discogs.GET_DETAIL)

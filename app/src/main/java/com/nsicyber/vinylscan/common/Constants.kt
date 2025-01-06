@@ -1,15 +1,12 @@
 package com.nsicyber.vinylscan.common
 
 object Constants {
-
     object Destination {
-        const val MAP_SCREEN = "map_screen"
         const val CAMERA_SCREEN = "camera_screen"
+        const val DETAIL_SCREEN = "detail_screen"
+        const val SEARCH_SCREEN = "search_screen"
     }
 
-    object Firestore {
-        const val COLLECTION = "emojis"
-    }
 
     object Endpoints {
         object Discogs {
@@ -18,7 +15,7 @@ object Constants {
         }
 
         object Deezer {
-            const val SEARCH = "/search/album"
+            const val SEARCH = "/search"
             const val GET_ALBUM_DETAIL = "/album/{albumId}"
 
         }

@@ -21,6 +21,12 @@ class DiscogsNetworkRepositoryImpl @Inject constructor(
         api.searchBarcode(barcode = barcode)
     }
 
+    override fun searchVinyl(
+        query: String?,
+    ): Flow<ApiResult<GetSearchResponse?>?> = apiFlow {
+        api.searchVinyl(query = query)
+    }
+
     override fun getDetail(masterId: Int?): Flow<ApiResult<GetDetailResponse?>?> = apiFlow {
         api.getDetail(masterId = masterId)
     }

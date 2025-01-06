@@ -14,6 +14,7 @@ interface MediaPlayerRepository {
     fun resume()
 
     fun onInfo()
+    fun onFinish(onFinish:()->Unit)
 
     fun setUrl(uri: String?)
 
