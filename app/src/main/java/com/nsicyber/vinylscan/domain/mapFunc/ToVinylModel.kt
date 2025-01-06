@@ -57,6 +57,7 @@ fun calculateTotalTime(times: List<String?>?): String {
         val seconds = totalSeconds % 60
 
         return when {
+            hours==0 && seconds==0 && minutes==0-> ""
             hours > 0 -> "$hours saat $minutes dakika $seconds saniye"
             else -> "$minutes dakika $seconds saniye"
         }

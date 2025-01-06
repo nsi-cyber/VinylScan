@@ -58,6 +58,7 @@ import com.nsicyber.vinylscan.presentation.components.BarcodeBottomSheet
 import com.nsicyber.vinylscan.presentation.components.BaseView
 import com.nsicyber.vinylscan.presentation.components.TrackPreviewBottomSheet
 import com.nsicyber.vinylscan.presentation.components.setScreenBrightness
+import com.simonsickle.compose.barcodes.BarcodeType
 import kotlinx.coroutines.launch
 
 
@@ -221,45 +222,50 @@ fun DetailScreen(
                                 contentDescription = ""
                             )
                         }
-                        Box(
-                            modifier = Modifier
-                                .align(Alignment.BottomEnd)
-                                .padding(16.dp)
-                                .clip(
-                                    RoundedCornerShape(20.dp)
-                                )
 
-                                .background(Color.White.copy(alpha = 0.7f))
+                        if (BarcodeType.EAN_13.isValueValid(data.barcode ?: "")) {
 
-                                .clickable {
-                                    bottomSheetType.value = BottomSheetType.BARCODE
-                                    scope.launch {
-                                        bottomSheetState.bottomSheetState.expand()
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.BottomEnd)
+                                    .padding(16.dp)
+                                    .clip(
+                                        RoundedCornerShape(20.dp)
+                                    )
+
+                                    .background(Color.White.copy(alpha = 0.7f))
+
+                                    .clickable {
+                                        bottomSheetType.value = BottomSheetType.BARCODE
+                                        scope.launch {
+                                            bottomSheetState.bottomSheetState.expand()
+                                        }
+
                                     }
-
-                                }
-                                .padding(8.dp)
-                        ) {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
+                                    .padding(8.dp)
                             ) {
-                                Row(horizontalArrangement = Arrangement.spacedBy(1.dp)) {
-                                    repeat(30) {
-                                        Box(
-                                            modifier = Modifier
-                                                .height(30.dp)
-                                                .width(2.dp)
-                                                .background(Color.Black)
-                                        )
-                                    }
-                                }
-                                Text(
-                                    text = stringResource(R.string.show_barcode),
-                                    color = Color.Black
-                                )
-                            }
 
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Row(horizontalArrangement = Arrangement.spacedBy(1.dp)) {
+                                        repeat(30) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .height(30.dp)
+                                                    .width(2.dp)
+                                                    .background(Color.Black)
+                                            )
+                                        }
+                                    }
+                                    Text(
+                                        text = stringResource(R.string.show_barcode),
+                                        color = Color.Black
+                                    )
+                                }
+
+                            }
                         }
                     }
 
@@ -376,6 +382,34 @@ fun DetailScreen(
 
                     }
                 }
+                data?.totalTime?.takeIf { !it.isNullOrEmpty() }?.let {
+                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text(
+                            text = "Toplam Süre",
+                            color = Color.Gray,
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Start,
+                            fontWeight = FontWeight.Normal,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 16.dp),
+                        )
+
+                        Text(
+                            text = it,
+                            color = Color.White,
+                            fontSize = 18.sp,
+                            lineHeight = 18.sp,
+
+                            textAlign = TextAlign.Start,
+                            fontWeight = FontWeight.Normal,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 16.dp),
+                        )
+
+                    }
+                }
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     data?.tracks?.takeIf { !it.isNullOrEmpty() }
                         ?.let {
@@ -425,15 +459,19 @@ fun DetailScreen(
                                             fontWeight = FontWeight.Normal,
                                             modifier = Modifier.fillMaxWidth()
                                         )
-                                        Text(
-                                            lineHeight = 24.sp,
-                                            text = it?.get(trackIndex)?.duration.orEmpty(),
-                                            color = Color.Gray,
-                                            fontSize = 14.sp,
-                                            textAlign = TextAlign.Start,
-                                            fontWeight = FontWeight.Normal,
-                                            modifier = Modifier.fillMaxWidth()
-                                        )
+                                        it?.get(trackIndex)?.duration?.takeIf { !it.isNullOrBlank() }
+                                            ?.let { duration ->
+                                                Text(
+                                                    lineHeight = 24.sp,
+                                                    text = duration,
+                                                    color = Color.Gray,
+                                                    fontSize = 14.sp,
+                                                    textAlign = TextAlign.Start,
+                                                    fontWeight = FontWeight.Normal,
+                                                    modifier = Modifier.fillMaxWidth()
+                                                )
+                                            }
+
                                     }
                                 }
 
