@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import android.hardware.camera2.CameraManager
 import android.view.WindowManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -44,7 +43,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -64,7 +62,7 @@ import com.nsicyber.vinylscan.presentation.components.LottieView
 fun CameraScreen(
     cameraViewModel: CameraViewModel = hiltViewModel(),
     applicationContext: Context,
-    navigateToDetail: (data:VinylModel?) -> Unit,
+    navigateToDetail: (data: VinylModel?) -> Unit,
     navigateToSearch: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
@@ -152,7 +150,7 @@ fun CameraScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
+                            .padding(horizontal = 32.dp)
                             .clip(RoundedCornerShape(20.dp))
                             .align(Alignment.Center)
                             .background(Color.White.copy(alpha = 0.7f))
@@ -175,7 +173,11 @@ fun CameraScreen(
                         }
                         Text(
                             text = stringResource(R.string.scan_vinyl_barcode),
-                            style = TextStyle(fontWeight = FontWeight.Normal, fontSize = 22.sp, color = Color.Black)
+                            style = TextStyle(
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 22.sp,
+                                color = Color.Black
+                            )
                         )
                     }
 
@@ -211,11 +213,15 @@ fun CameraScreen(
                             imageVector = Icons.Default.Search,
                             contentDescription = ""
                         )
-                        Text(text = stringResource(R.string.search_vinyls), color = Color.Black)
+                        Text(
+                            text = stringResource(R.string.search_vinyls),
+                            color = Color.Black.copy(alpha = 0.5f)
+                        )
                     }
 
 
-                }            }
+                }
+            }
         }
     )
 }
