@@ -10,11 +10,9 @@ class MediaPlayerRepositoryImpl @Inject constructor() : MediaPlayerRepository {
 
     var mediaPlayer = MediaPlayer()
 
-    private var isBuffering = false
 
 
     override fun play() {
-        onInfo()
         mediaPlayer.prepare()
         AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_MEDIA)
@@ -27,12 +25,9 @@ class MediaPlayerRepositoryImpl @Inject constructor() : MediaPlayerRepository {
         mediaPlayer.start()
     }
 
-    override fun onInfo() {
-        mediaPlayer.setOnBufferingUpdateListener { mediaPlayer, state ->
-            when (state) {
-                MediaPlayer.MEDIA_INFO_BUFFERING_START -> isBuffering = true
-                MediaPlayer.MEDIA_INFO_BUFFERING_END -> isBuffering = false
-            }
+    override fun onInfo(onStart:()->Unit,onFinish: () -> Unit) {
+        mediaPlayer.setOnPreparedListener {
+            onFinish()
         }
 
     }

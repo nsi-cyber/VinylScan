@@ -1,7 +1,8 @@
 package com.nsicyber.vinylscan.domain.repository
 
 import com.nsicyber.vinylscan.common.ApiResult
-import com.nsicyber.vinylscan.data.model.response.discogs.getDetail.GetDetailResponse
+import com.nsicyber.vinylscan.data.model.response.discogs.getMasterDetail.GetMasterDetailResponse
+import com.nsicyber.vinylscan.data.model.response.discogs.getReleaseDetail.GetReleaseDetailResponse
 import com.nsicyber.vinylscan.data.model.response.discogs.getSearch.GetSearchResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -16,8 +17,12 @@ interface DiscogsNetworkRepository {
         query: String?,
     ): Flow<ApiResult<GetSearchResponse?>?>
 
-    fun getDetail(
+    fun getMasterDetail(
         masterId: Int?,
-    ): Flow<ApiResult<GetDetailResponse?>?>
+    ): Flow<ApiResult<GetMasterDetailResponse?>?>
+
+  fun getReleaseDetail(
+        releaseId: Int?,
+    ): Flow<ApiResult<GetReleaseDetailResponse?>?>
 
 }

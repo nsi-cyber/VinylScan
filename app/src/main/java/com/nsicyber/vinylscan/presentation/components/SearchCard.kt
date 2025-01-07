@@ -33,14 +33,13 @@ fun SearchCard(
 
     Row(
         modifier = Modifier
+            .clip(RoundedCornerShape(10.dp))
             .clickable {
                 onItemClick(data)
             }
             .height(100.dp)
-            .clip(RoundedCornerShape(10.dp))
             .fillMaxWidth()
-
-            .padding(bottom = 16.dp)
+            .padding(vertical = 8.dp)
 
 
     ) {
@@ -68,6 +67,8 @@ fun SearchCard(
             Text(
                 text = data?.title.orEmpty(),
                 color = Color.White,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
                 fontSize = 18.sp,
                 textAlign = TextAlign.Start,
                 fontWeight = FontWeight.Medium,

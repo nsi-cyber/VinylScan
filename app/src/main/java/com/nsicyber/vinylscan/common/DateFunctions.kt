@@ -12,7 +12,7 @@ fun formatDate(inputDate: String?): String {
         val date = inputFormat.parse(inputDate)
         date?.let { outputFormat.format(it) } ?: ""
     } catch (e: Exception) {
-        ""
+        return inputDate.toString()
     }
 }
 

@@ -5,6 +5,7 @@ import com.nsicyber.vinylscan.domain.model.VinylModel
 data class DetailScreenState(
      val onSuccess: Boolean = false,
     val isPageLoading: Boolean = false,
+    val onBottomSheetError: Boolean = false,
     val previewTrackModel: PreviewTrackModel? = null,
 
     )

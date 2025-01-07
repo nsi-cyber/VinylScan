@@ -1,42 +1,55 @@
 package com.nsicyber.vinylscan.domain.mapFunc
 
-import com.nsicyber.vinylscan.data.model.response.discogs.getDetail.GetDetailResponse
-import com.nsicyber.vinylscan.data.model.response.discogs.getDetail.Tracklist
+import com.nsicyber.vinylscan.data.model.response.discogs.getMasterDetail.GetMasterDetailResponse
+import com.nsicyber.vinylscan.data.model.response.discogs.getMasterDetail.MasterTracklist
+import com.nsicyber.vinylscan.data.model.response.discogs.getReleaseDetail.GetReleaseDetailResponse
+import com.nsicyber.vinylscan.data.model.response.discogs.getReleaseDetail.ReleaseTracklist
 import com.nsicyber.vinylscan.domain.model.VinylModel
 import com.nsicyber.vinylscan.domain.model.VinylTrackModel
 
 
-fun GetDetailResponse?.toVinylModel(thumbnail: String?,barcode:List<String?>?): VinylModel {
+
+fun GetReleaseDetailResponse?.toVinylModel(): VinylModel {
     return VinylModel(
-        cover = thumbnail.orEmpty(),
-        title = this?.title.orEmpty(),
-        releaseDate = this?.year.toString(),
-        artistName = this?.artists?.map { it?.name }?.joinToString (", ")?: "",
-        genres = this?.genres?.takeIf { !it.isNullOrEmpty()  }?.joinToString (", ")  ,
-        styles = this?.styles?.takeIf { !it.isNullOrEmpty()  }?.joinToString (", "),
-        tracks = this?.tracklist?.filter { it?.type_=="track" }?.map {
+         title = this?.title.orEmpty(),
+        vinylQuantity = this?.format_quantity,
+        releaseDate = this?.released,
+        artistName = this?.artists_sort.orEmpty(),
+        genres = this?.genres?.takeIf { !it.isNullOrEmpty() }?.joinToString(", "),
+        styles = this?.styles?.takeIf { !it.isNullOrEmpty() }?.joinToString(", "),
+        tracks = this?.tracklist?.filter { it?.type_ == "track" }?.map {
             it?.toVinylTrackModel(
                 artistName = this?.artists?.firstOrNull()?.name,
                 albumName = this?.title
             )
         },
-        barcode = getBarcodeFromList(barcode),
-        totalTime = calculateTotalTime(this?.tracklist?.map { it?.duration })
+        barcode = this?.identifiers?.firstOrNull { it?.type == "Barcode" }?.value?.replace(
+            "\\s".toRegex(),
+            ""
+        )?.replace("-".toRegex(), ""),
+        totalTime = calculateTotalTime(this?.tracklist?.map { it?.duration }),
+        images = this?.images?.map { it?.uri },
+        catalog = this?.labels?.firstOrNull { !it?.catno.isNullOrEmpty() }?.catno,
+        minPrice = this?.lowest_price.toString()
     )
 }
 
 
-fun Tracklist?.toVinylTrackModel(albumName: String?, artistName: String?): VinylTrackModel {
+
+
+fun ReleaseTracklist?.toVinylTrackModel(albumName: String?, artistName: String?): VinylTrackModel {
     return VinylTrackModel(
         title = this?.title.orEmpty(),
+        position = this?.position.orEmpty(),
         duration = this?.duration.orEmpty(),
         albumName = albumName,
         artistName = artistName
     )
 }
+
 fun getBarcodeFromList(strings: List<String?>?): String? {
     return strings
-       ?.map { it?.replace("\\s".toRegex(), "") }
+        ?.map { it?.replace("\\s".toRegex(), "") }?.map { it?.replace("-".toRegex(), "") }
         ?.firstOrNull { it?.all { char -> char.isDigit() } == true }
 }
 
@@ -57,7 +70,7 @@ fun calculateTotalTime(times: List<String?>?): String {
         val seconds = totalSeconds % 60
 
         return when {
-            hours==0 && seconds==0 && minutes==0-> ""
+            hours == 0 && seconds == 0 && minutes == 0 -> ""
             hours > 0 -> "$hours saat $minutes dakika $seconds saniye"
             else -> "$minutes dakika $seconds saniye"
         }

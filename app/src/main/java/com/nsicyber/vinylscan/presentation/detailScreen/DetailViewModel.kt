@@ -50,7 +50,7 @@ class DetailViewModel @Inject constructor(
 
         viewModelScope.launch {
             searchUseCase(query).onStart {
-                updateUiState { copy(isPageLoading = true) }
+                updateUiState { copy(isPageLoading = true, onBottomSheetError = false) }
             }.onEach { result ->
 
                 when (result) {
@@ -77,7 +77,8 @@ class DetailViewModel @Inject constructor(
                                     album = result.data?.data?.firstOrNull()?.album?.title,
                                     preview = result.data?.data?.firstOrNull()?.preview,
                                     cover = result.data?.data?.firstOrNull()?.md5_image
-                                )
+                                ),
+                                onBottomSheetError = if (result?.data?.data?.firstOrNull() == null) true else false
                             )
                         }
                     }

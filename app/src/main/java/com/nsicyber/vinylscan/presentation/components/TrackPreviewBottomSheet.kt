@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -50,7 +52,7 @@ import com.simonsickle.compose.barcodes.BarcodeType
 @Composable
 fun TrackPreviewBottomSheet(
     musicModel: PreviewTrackModel?,
-    viewModel: MediaPlayerViewModel
+    viewModel: MediaPlayerViewModel,
 ) {
     val rotation = remember { Animatable(0f) }
     var isRotating by remember { mutableStateOf(true) }
@@ -66,100 +68,105 @@ fun TrackPreviewBottomSheet(
             window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
     }
-    musicModel?.let {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(0.8f)
-                        .aspectRatio(1f)
-                        .clip(CircleShape)
-                        .clickable {
-                            if (isRotating) {
-                                viewModel.pauseMediaPlayer()
-                            } else {
-                                viewModel.resumeMediaPlayer()
-                            }
-                            isRotating = !isRotating
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Box(modifier = Modifier.rotate(rotation.value)) {
-                        Image(
-                            modifier = Modifier
-                                .align(Alignment.Center)
-                                .aspectRatio(1f),
-                            painter = painterResource(R.drawable.vinyl_image),
-                            contentDescription = ""
-                        )
-                        AsyncImage(
-                            model = "https://cdn-images.dzcdn.net/images/cover/${musicModel?.cover}/200x200.jpg",
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .align(Alignment.Center)
-                                .fillMaxWidth(0.4f)
-                                .aspectRatio(1f)
+    Box {
+        musicModel?.let {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f)
+                            .aspectRatio(1f)
+                            .clip(CircleShape)
+                            .clickable {
+                                if (isRotating) {
+                                    viewModel.pauseMediaPlayer()
+                                } else {
+                                    viewModel.resumeMediaPlayer()
+                                }
+                                isRotating = !isRotating
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Box(modifier = Modifier.rotate(rotation.value)) {
+                            Image(
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                                    .aspectRatio(1f),
+                                painter = painterResource(R.drawable.vinyl_image),
+                                contentDescription = ""
+                            )
+                            AsyncImage(
+                                model = "https://cdn-images.dzcdn.net/images/cover/${musicModel?.cover}/200x200.jpg",
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                                    .fillMaxWidth(0.4f)
+                                    .aspectRatio(1f)
 
+                                    .clip(CircleShape)
+                            )
+                        }
+
+
+                        Box(
+
+                            modifier = Modifier
+                                .size(44.dp)
+                                .align(Alignment.Center)
                                 .clip(CircleShape)
+                                .background(Color.White)
+
+                        )
+                        Image(
+                            painter = painterResource(
+                                if (isRotating) R.drawable.ic_pause else R.drawable.ic_play
+                            ), colorFilter = ColorFilter.tint(Color.Black),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(40.dp)
+                                .align(Alignment.Center)
+
                         )
                     }
-
-
-                    Box(
-
-                        modifier = Modifier
-                            .size(44.dp)
-                            .align(Alignment.Center)
-                            .clip(CircleShape)
-                            .background(Color.White)
-
-                    )
                     Image(
-                        painter = painterResource(
-                            if (isRotating) R.drawable.ic_pause else R.drawable.ic_play
-                        ), colorFilter = ColorFilter.tint(Color.Black),
-                        contentDescription = null,
                         modifier = Modifier
-                            .size(40.dp)
-                            .align(Alignment.Center)
-
+                            .fillMaxWidth(0.2f)
+                            .align(Alignment.TopEnd),
+                        painter = painterResource(R.drawable.turntable_image),
+                        contentDescription = ""
                     )
                 }
-                Image(
-                    modifier = Modifier
-                        .fillMaxWidth(0.2f)
-                        .align(Alignment.TopEnd),
-                    painter = painterResource(R.drawable.turntable_image),
-                    contentDescription = ""
+
+
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = musicModel?.title.orEmpty(),
+                    fontWeight = FontWeight.Bold,
+                    style = TextStyle(fontSize = 26.sp)
+                )
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = musicModel?.album.orEmpty(),
+                    fontWeight = FontWeight.Medium,
+                    style = TextStyle(fontSize = 22.sp)
+                )
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = musicModel?.artistName.orEmpty(),
+                    fontWeight = FontWeight.Normal,
+                    style = TextStyle(fontSize = 20.sp, color = Color.Gray)
                 )
             }
-
-
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = musicModel?.title.orEmpty(),
-                fontWeight = FontWeight.Bold,
-                style = TextStyle(fontSize = 26.sp)
-            )
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = musicModel?.album.orEmpty(),
-                fontWeight = FontWeight.Medium,
-                style = TextStyle(fontSize = 22.sp)
-            )
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = musicModel?.artistName.orEmpty(),
-                fontWeight = FontWeight.Normal,
-                style = TextStyle(fontSize = 20.sp, color = Color.Gray)
-            )
+        }
+        if (viewModel.isBuffering) {
+            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
         }
     }
 

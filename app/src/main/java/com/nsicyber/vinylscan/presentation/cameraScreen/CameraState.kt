@@ -1,7 +1,6 @@
 package com.nsicyber.vinylscan.presentation.cameraScreen
 
- import com.nsicyber.vinylscan.data.model.response.discogs.getDetail.GetDetailResponse
-import com.nsicyber.vinylscan.domain.model.VinylModel
+ import com.nsicyber.vinylscan.domain.model.VinylModel
 
 
 data class CameraState(

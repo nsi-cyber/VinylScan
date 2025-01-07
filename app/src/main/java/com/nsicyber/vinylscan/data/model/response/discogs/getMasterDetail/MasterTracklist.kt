@@ -1,6 +1,6 @@
-package com.nsicyber.vinylscan.data.model.response.discogs.getDetail
+package com.nsicyber.vinylscan.data.model.response.discogs.getMasterDetail
 
-data class Tracklist(
+data class MasterTracklist(
     val duration: String?,
     val position: String?,
     val title: String?,

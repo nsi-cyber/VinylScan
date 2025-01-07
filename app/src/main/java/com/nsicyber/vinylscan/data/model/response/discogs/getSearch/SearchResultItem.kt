@@ -9,4 +9,5 @@ data class SearchResultItem(
 
 
     val master_id: Int?,
+    val id: Int?,
 )

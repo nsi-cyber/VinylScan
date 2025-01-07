@@ -5,7 +5,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,6 +26,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -39,9 +42,8 @@ fun SearchInputField(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
+        modifier = Modifier.height(48.dp)
             .fillMaxWidth()
-
             .shadow(4.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(Color.White)
@@ -56,16 +58,8 @@ fun SearchInputField(
             TextField(
                 value = query,
                 onValueChange = onQueryChange,
-                maxLines = 1,
-                placeholder = {
-                    Text(
-                        text = "Search Vinyls...",
-                        color = Color.Black,
-                        fontSize = 18.sp,
-                        textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Normal
-                    )
-                },
+                singleLine = true,
+                textStyle = TextStyle(fontSize = 14.sp),
                 colors = TextFieldDefaults.colors(
                     focusedTextColor = Color.Black,
                     unfocusedTextColor = Color.Black,
@@ -75,8 +69,7 @@ fun SearchInputField(
                     focusedIndicatorColor = Color.White,
                     unfocusedIndicatorColor = Color.White
                 ),
-                modifier = Modifier
-                    .fillMaxWidth( ).weight(1f)
+                modifier = Modifier.fillMaxSize().weight(1f)
                     .focusRequester(focusRequester)
                     .background(color = Color.White)
             )

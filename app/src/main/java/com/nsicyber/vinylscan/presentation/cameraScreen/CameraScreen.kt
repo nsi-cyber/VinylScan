@@ -39,10 +39,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -153,8 +155,7 @@ fun CameraScreen(
                             .padding(horizontal = 32.dp)
                             .clip(RoundedCornerShape(20.dp))
                             .align(Alignment.Center)
-                            .background(Color.White.copy(alpha = 0.7f))
-                            .padding(32.dp)
+                             .padding(32.dp)
                             .onGloballyPositioned { layoutCoordinates ->
                                 columnSize = layoutCoordinates.size
                             },
@@ -164,7 +165,7 @@ fun CameraScreen(
                         Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
                             repeat(40) {
                                 Box(
-                                    modifier = Modifier
+                                    modifier = Modifier.alpha(0.3f)
                                         .height(50.dp)
                                         .width(2.dp)
                                         .background(Color.Black)
@@ -174,7 +175,7 @@ fun CameraScreen(
                         Text(
                             text = stringResource(R.string.scan_vinyl_barcode),
                             style = TextStyle(
-                                fontWeight = FontWeight.Normal,
+                                fontWeight = FontWeight.Light,
                                 fontSize = 22.sp,
                                 color = Color.Black
                             )
@@ -195,11 +196,11 @@ fun CameraScreen(
                         )
                     }
 
-
-                    Row(
+                    Box(
                         modifier = Modifier
                             .align(Alignment.TopStart)
                             .padding(16.dp)
+                            .size(48.dp)
                             .clip(
                                 RoundedCornerShape(20.dp)
                             )
@@ -213,11 +214,8 @@ fun CameraScreen(
                             imageVector = Icons.Default.Search,
                             contentDescription = ""
                         )
-                        Text(
-                            text = stringResource(R.string.search_vinyls),
-                            color = Color.Black.copy(alpha = 0.5f)
-                        )
                     }
+
 
 
                 }

@@ -6,7 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.nsicyber.vinylscan.common.ApiResult
 import com.nsicyber.vinylscan.domain.mapFunc.getBarcodeFromList
 import com.nsicyber.vinylscan.domain.mapFunc.toVinylModel
-import com.nsicyber.vinylscan.domain.useCases.GetDetailUseCase
+import com.nsicyber.vinylscan.domain.useCases.GetMasterDetailUseCase
+import com.nsicyber.vinylscan.domain.useCases.GetReleaseDetailUseCase
 import com.nsicyber.vinylscan.domain.useCases.SearchVinylUseCase
 import com.nsicyber.vinylscan.presentation.cameraScreen.showErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +28,7 @@ import javax.inject.Inject
 class SearchScreenViewModel @Inject
 constructor(
     private val searchVinylUseCase: SearchVinylUseCase,
-    private val getDetailUseCase: GetDetailUseCase,
+    private val getReleaseDetailUseCase: GetReleaseDetailUseCase,
 
     ) : ViewModel() {
 
@@ -53,24 +54,22 @@ constructor(
             }
 
             is SearchScreenEvent.OpenDetail -> getAlbumDiscogsDetail(
-                masterId = _uiState.value.searchSearchResultItem?.get(
+                releaseId = _uiState.value.searchSearchResultItem?.get(
                     event.index
-                )?.master_id,
-                thumbnail = _uiState.value.searchSearchResultItem?.get(event.index)?.cover_image,
-                barcode = _uiState.value.searchSearchResultItem?.get(event.index)?.barcode
+                )?.id,
+
             )
         }
     }
 
 
     private fun getAlbumDiscogsDetail(
-        masterId: Int?,
-        thumbnail: String?,
-        barcode: List<String?>?
+        releaseId: Int?,
+
     ) {
 
         viewModelScope.launch {
-            getDetailUseCase(masterId).onStart {
+            getReleaseDetailUseCase(releaseId).onStart {
                 updateUiState { copy(isPageLoading = true) }
             }.onEach { result ->
 
@@ -91,8 +90,6 @@ constructor(
                                 isPageLoading = false,
                                 onSuccess = true,
                                 vinylModel = result.data?.toVinylModel(
-                                    thumbnail = thumbnail,
-                                    barcode = barcode
                                 )
                             )
                         }
@@ -122,6 +119,7 @@ constructor(
                         updateUiState {
                             copy(
                                 searchSearchResultItem = result.data?.results
+                                    ?.filter { it?.master_id != 0 }
                                     ?.filter { !it?.barcode.isNullOrEmpty() }
                                     ?.filter { !it?.cover_image.isNullOrBlank() }
                                     ?.distinctBy { getBarcodeFromList(it?.barcode) },

@@ -9,7 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.mlkit.vision.common.InputImage
 import com.nsicyber.vinylscan.common.ApiResult
 import com.nsicyber.vinylscan.domain.mapFunc.toVinylModel
-import com.nsicyber.vinylscan.domain.useCases.GetDetailUseCase
+import com.nsicyber.vinylscan.domain.useCases.GetMasterDetailUseCase
+import com.nsicyber.vinylscan.domain.useCases.GetReleaseDetailUseCase
 import com.nsicyber.vinylscan.domain.useCases.RecognizeBarcodeUseCase
 import com.nsicyber.vinylscan.domain.useCases.SearchBarcodeUseCase
 import com.nsicyber.vinylscan.presentation.components.BaseViewModel
@@ -30,7 +31,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CameraViewModel @Inject constructor(
     private val recognizeBarcodeUseCase: RecognizeBarcodeUseCase,
-    private val getDetailUseCase: GetDetailUseCase,
+    private val getMasterDetailUseCase: GetMasterDetailUseCase,
+    private val getReleaseDetailUseCase: GetReleaseDetailUseCase,
     private val searchBarcodeUseCase: SearchBarcodeUseCase,
 ) : BaseViewModel() {
 
@@ -116,10 +118,9 @@ class CameraViewModel @Inject constructor(
 
 
                         is ApiResult.Success -> {
-                            getAlbumDiscogsDetail(
-                                masterId = result.data?.results?.firstOrNull()?.master_id,
-                                thumbnail = result.data?.results?.firstOrNull()?.cover_image,
-                                barcode = barcode
+                            getReleaseDiscogsDetail(
+                                releaseId = result.data?.results?.firstOrNull()?.id,
+
                             )
 
 
@@ -189,15 +190,15 @@ class CameraViewModel @Inject constructor(
 
      */
 
-
-    private fun getAlbumDiscogsDetail(
+/*
+    private fun getMasterDiscogsDetail(
         masterId: Int?,
         thumbnail: String?,
         barcode: String?
     ) {
 
         viewModelScope.launch {
-            getDetailUseCase(masterId).onStart {
+            getMasterDetailUseCase(masterId).onStart {
                 updateUiState { copy(isPageLoading = true) }
             }.onEach { result ->
 
@@ -218,6 +219,49 @@ class CameraViewModel @Inject constructor(
                                 isPageLoading = false,
                                 onSuccess = true,
                                 vinylModel = result.data?.toVinylModel(thumbnail = thumbnail, barcode = listOf(barcode))
+                            )
+                        }
+
+                    null -> {
+
+
+                    }
+                }
+            }.launchIn(this)
+        }
+
+
+    }
+
+
+
+ */
+    private fun getReleaseDiscogsDetail(
+        releaseId: Int?,
+    ) {
+
+        viewModelScope.launch {
+            getReleaseDetailUseCase(releaseId).onStart {
+                updateUiState { copy(isPageLoading = true) }
+            }.onEach { result ->
+
+                when (result) {
+                    is ApiResult.Error -> {
+                        showErrorMessage(this@CameraViewModel, result.message)
+                        updateUiState {
+                            copy(
+                                isPageLoading = false,
+                            )
+                        }
+                    }
+
+
+                    is ApiResult.Success ->
+                        updateUiState {
+                            copy(
+                                isPageLoading = false,
+                                onSuccess = true,
+                                vinylModel = result.data?.toVinylModel()
                             )
                         }
 

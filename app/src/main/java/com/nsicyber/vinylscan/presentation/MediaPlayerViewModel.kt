@@ -9,13 +9,28 @@ import javax.inject.Inject
 @HiltViewModel
 class MediaPlayerViewModel @Inject constructor(private var mediaPlayerRepository: MediaPlayerRepository) :
     ViewModel() {
+    var isBuffering = true
 
     fun startMediaPlayer(uri: String?) {
         try {
+            isBuffering = true
+
+            onBufferListener()
             mediaPlayerRepository.setUrl(uri)
             mediaPlayerRepository.play()
         } catch (e: Exception) {
         }
+    }
+
+
+    fun onBufferListener() {
+        mediaPlayerRepository.onInfo(
+            onFinish = {
+                isBuffering = false
+                       },
+            onStart = {
+                isBuffering = true
+            })
     }
 
     fun resumeMediaPlayer() {

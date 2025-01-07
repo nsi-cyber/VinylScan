@@ -11,7 +11,8 @@ object Constants {
     object Endpoints {
         object Discogs {
             const val SEARCH = "/database/search"
-            const val GET_DETAIL = "/masters/{masterId}"
+            const val GET_MASTER_DETAIL = "/masters/{masterId}"
+            const val GET_RELEASE_DETAIL = "/releases/{releaseId}"
         }
 
         object Deezer {
