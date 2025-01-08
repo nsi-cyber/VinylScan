@@ -70,6 +70,7 @@ fun SearchScreen(
 
     BaseView(isPageLoading = searchScreenState.isPageLoading,
 
+        modifier = Modifier.background(Color.Black),
 
         content = {
             Column(

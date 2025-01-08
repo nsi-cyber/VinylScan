@@ -1,6 +1,19 @@
 <resources>
-    <string name="app_name">Plak Tara</string>
+    <string name="app_name">Plak Tarama</string>
     <string name="genre">Tür</string>
     <string name="year">Yıl</string>
     <string name="style">Stil</string>
+    <string name="show_barcode">Barkodu Göster</string>
+    <string name="scan_vinyl_barcode">Plak barkodunu tara...</string>
+    <string name="search_vinyls">Plakları Ara...</string>
+    <string name="listen_on">Albümü Dinle</string>
+    <string name="youtube_music">Youtube Müzik</string>
+    <string name="apple_music">Apple Müzik</string>
+    <string name="spotify">Spotify</string>
+    <string name="total_time">Toplam Süre</string>
+    <string name="lp_count">LP Sayısı</string>
+    <string name="catalog">Katalog</string>
+    <string name="no_result_found">Sonuç bulunamadı</string>
+    <string name="track_data_not_found">Parça verisi bulunamadı</string>
+    <string name="release_date">Çıkış Tarihi</string>
 </resources>

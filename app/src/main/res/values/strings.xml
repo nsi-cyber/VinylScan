@@ -6,13 +6,14 @@
     <string name="show_barcode">Show Barcode</string>
     <string name="scan_vinyl_barcode">Scan vinyl barcode...</string>
     <string name="search_vinyls">Search Vinyls...</string>
-    <string name="listen_on">Listen on</string>
+    <string name="listen_on">Listen Album on</string>
     <string name="youtube_music">Youtube Music</string>
     <string name="apple_music">Apple Music</string>
     <string name="spotify">Spotify</string>
-    <string name="total_time">Toplam Süre</string>
+    <string name="total_time">Total Time</string>
     <string name="lp_count">LP Count</string>
     <string name="catalog">Catalog</string>
     <string name="no_result_found">No result found</string>
     <string name="track_data_not_found">Track data not found</string>
+    <string name="release_date">Release Date</string>
 </resources>

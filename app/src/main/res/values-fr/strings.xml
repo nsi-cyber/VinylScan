@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Scanner Vinyle</string>
+    <string name="genre">Genre</string>
+    <string name="year">Année</string>
+    <string name="style">Style</string>
+    <string name="show_barcode">Afficher le Code-barres</string>
+    <string name="scan_vinyl_barcode">Scanner le code-barres du vinyle...</string>
+    <string name="search_vinyls">Rechercher des vinyles...</string>
+    <string name="listen_on">Écouter l\'album sur</string>
+    <string name="youtube_music">Youtube Music</string>
+    <string name="apple_music">Apple Music</string>
+    <string name="spotify">Spotify</string>
+    <string name="total_time">Temps Total</string>
+    <string name="lp_count">Nombre de LP</string>
+    <string name="catalog">Catalogue</string>
+    <string name="no_result_found">Aucun résultat trouvé</string>
+    <string name="track_data_not_found">Données de piste introuvables</string>
+    <string name="release_date">Date de Sortie</string>
+</resources>

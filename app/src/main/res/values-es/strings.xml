@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Escanear Vinilo</string>
+    <string name="genre">Género</string>
+    <string name="year">Año</string>
+    <string name="style">Estilo</string>
+    <string name="show_barcode">Mostrar Código de Barras</string>
+    <string name="scan_vinyl_barcode">Escanear código de barras del vinilo...</string>
+    <string name="search_vinyls">Buscar Vinilos...</string>
+    <string name="listen_on">Escuchar álbum en</string>
+    <string name="youtube_music">Youtube Music</string>
+    <string name="apple_music">Apple Music</string>
+    <string name="spotify">Spotify</string>
+    <string name="total_time">Tiempo Total</string>
+    <string name="lp_count">Cantidad de LP</string>
+    <string name="catalog">Catálogo</string>
+    <string name="no_result_found">No se encontraron resultados</string>
+    <string name="track_data_not_found">No se encontraron datos de pista</string>
+    <string name="release_date">Fecha de Lanzamiento</string>
+</resources>

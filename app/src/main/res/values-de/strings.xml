@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Vinyl Scannen</string>
+    <string name="genre">Genre</string>
+    <string name="year">Jahr</string>
+    <string name="style">Stil</string>
+    <string name="show_barcode">Barcode Anzeigen</string>
+    <string name="scan_vinyl_barcode">Vinyl-Barcode scannen...</string>
+    <string name="search_vinyls">Vinyls suchen...</string>
+    <string name="listen_on">Album hören auf</string>
+    <string name="youtube_music">Youtube Music</string>
+    <string name="apple_music">Apple Music</string>
+    <string name="spotify">Spotify</string>
+    <string name="total_time">Gesamtzeit</string>
+    <string name="lp_count">LP-Anzahl</string>
+    <string name="catalog">Katalog</string>
+    <string name="no_result_found">Keine Ergebnisse gefunden</string>
+    <string name="track_data_not_found">Track-Daten nicht gefunden</string>
+    <string name="release_date">Veröffentlichungsdatum</string>
+</resources>

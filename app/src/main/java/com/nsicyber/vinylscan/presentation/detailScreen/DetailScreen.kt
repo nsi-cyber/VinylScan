@@ -196,7 +196,7 @@ fun DetailScreen(
     }
 
     BaseView(isPageLoading = detailState.isPageLoading,
-
+modifier = Modifier.background(Color.Black),
         bottomSheetState = bottomSheetState,
         bottomSheetContent = {
             when (bottomSheetType.value) {
@@ -388,7 +388,7 @@ fun DetailScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(start = 16.dp),
-                            text = stringResource(R.string.year),
+                            text = stringResource(R.string.release_date),
                             color = Color.Gray,
                             fontSize = 16.sp,
                             textAlign = TextAlign.Start,
