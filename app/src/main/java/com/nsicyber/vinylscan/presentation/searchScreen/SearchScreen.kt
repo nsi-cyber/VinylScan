@@ -116,11 +116,10 @@ fun SearchScreen(
                 ) {
 
                     if (searchScreenState.searchSearchResultItem.isNullOrEmpty() &&
-                        !searchScreenState.searchQuery.isNullOrBlank() &&
-                        searchScreenState.isPageLoading == false
+                        !searchScreenState.searchQuery.isNullOrBlank() && !searchScreenState.isPageLoading
                     ) {
                         item {
-                            Text(text = stringResource(R.string.no_result_found))
+                            Text(text = stringResource(R.string.no_result_found), color = Color.White)
                         }
                     }
 

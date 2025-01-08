@@ -5,6 +5,7 @@ data class SearchResultItem(
     val cover_image: String?,
     val title: String?,
     val year: String?,
+    val type: String?,
     val barcode: List<String?>?,
 
 

@@ -141,8 +141,9 @@ constructor(
                         updateUiState {
                             copy(
                                 searchSearchResultItem = result.data?.results
-                                    ?.filter { it?.master_id != 0 }
-                                    ?.filter { !it?.barcode.isNullOrEmpty() }
+                                    ?.filter { it?.type == "release" }
+                                    //  ?.filter { it?.master_id != 0 }
+                                    //  ?.filter { !it?.barcode.isNullOrEmpty() }
                                     ?.filter { !it?.cover_image.isNullOrBlank() }
                                     ?.distinctBy { getBarcodeFromList(it?.barcode) },
                                 isPageLoading = false

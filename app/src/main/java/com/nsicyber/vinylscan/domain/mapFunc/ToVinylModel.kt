@@ -26,7 +26,7 @@ fun GetReleaseDetailResponse?.toVinylModel(): VinylModel {
         )?.replace("-".toRegex(), ""),
         totalTime = calculateTotalTime(this?.tracklist?.map { it?.duration }),
         images = this?.images?.map { it?.uri },
-        catalog = this?.labels?.firstOrNull { !it?.catno.isNullOrEmpty() }?.catno,
+        catalog = this?.labels?.firstOrNull { !it?.catno.isNullOrEmpty() }?.catno.orEmpty(),
         minPrice = this?.lowest_price.toString()
     )
 }
