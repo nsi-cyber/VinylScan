@@ -66,8 +66,8 @@ fun calculateTotalTime(times: List<String?>?): String {
 
         return when {
             hours == 0 && seconds == 0 && minutes == 0 -> ""
-            hours > 0 -> "$hours saat $minutes dakika $seconds saniye"
-            else -> "$minutes dakika $seconds saniye"
+            hours > 0 -> "$hours:$minutes:$seconds"
+            else -> "$minutes:$seconds"
         }
     } catch (e: Exception) {
         return ""
