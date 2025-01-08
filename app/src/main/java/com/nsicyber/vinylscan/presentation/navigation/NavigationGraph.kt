@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -45,7 +46,7 @@ fun NavigationGraph(
     val currentDestination = currentBackStackEntry?.destination?.route
 
     val vinylModel = remember { mutableStateOf<VinylModel?>(null) }
-
+    val scope = rememberCoroutineScope()
 
     Scaffold { innerPadding ->
 
@@ -66,7 +67,8 @@ fun NavigationGraph(
                         navActions.navigateToDetailScreen()
                     },
                     navigateToSearch = {
-                        navActions.navigateToSearchScreen()
+
+                          navActions.navigateToSearchScreen()
                     },
                 )
             }
@@ -106,6 +108,3 @@ fun NavigationGraph(
     }
 
 }
-
-
-

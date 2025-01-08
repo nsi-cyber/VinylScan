@@ -63,7 +63,7 @@ fun SearchScreen(
     LaunchedEffect(searchScreenState.onSuccess) {
         if (searchScreenState.onSuccess && searchScreenState.vinylModel != null) {
             onDetail(searchScreenState.vinylModel)
-            searchScreenViewModel.onEvent(SearchScreenEvent.SetStateEmpty)
+            searchScreenViewModel.onEvent(SearchScreenEvent.DetailOpened)
         }
     }
 

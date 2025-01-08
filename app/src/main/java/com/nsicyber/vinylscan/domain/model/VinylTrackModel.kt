@@ -1,7 +1,5 @@
 package com.nsicyber.vinylscan.domain.model
 
-import kotlin.time.Duration
-
 
 data class VinylTrackModel(
     val title: String?,

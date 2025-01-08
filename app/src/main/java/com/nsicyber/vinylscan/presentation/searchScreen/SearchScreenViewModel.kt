@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.nsicyber.vinylscan.common.ApiResult
 import com.nsicyber.vinylscan.domain.mapFunc.getBarcodeFromList
 import com.nsicyber.vinylscan.domain.mapFunc.toVinylModel
-import com.nsicyber.vinylscan.domain.useCases.GetMasterDetailUseCase
 import com.nsicyber.vinylscan.domain.useCases.GetReleaseDetailUseCase
 import com.nsicyber.vinylscan.domain.useCases.SearchVinylUseCase
 import com.nsicyber.vinylscan.presentation.cameraScreen.showErrorMessage
@@ -45,12 +44,17 @@ constructor(
                 updateUiState { copy(searchQuery = event.query) }
                 if (event.query.length >= 3)
                     searchWithDebounce(event.query)
-                else if (event.query.isEmpty())
-                    setStateEmpty()
+                else if (event.query.isEmpty()) {
+                    searchJob?.cancel()
+                    updateUiState { copy(searchSearchResultItem = null, searchQuery = "", onSuccess = false) }
+
+                }
             }
 
             SearchScreenEvent.SetStateEmpty -> {
-                setStateEmpty()
+                searchJob?.cancel()
+                updateUiState { copy(searchSearchResultItem = null, searchQuery = "", onSuccess = false) }
+
             }
 
             is SearchScreenEvent.OpenDetail -> getAlbumDiscogsDetail(
@@ -59,6 +63,12 @@ constructor(
                 )?.id,
 
             )
+
+            SearchScreenEvent.DetailOpened -> {
+                searchJob?.cancel()
+                updateUiState { copy(onSuccess = false) }
+
+            }
         }
     }
 
@@ -152,10 +162,6 @@ constructor(
         }
     }
 
-    private fun setStateEmpty() {
-        searchJob?.cancel()
-        updateUiState { copy(searchSearchResultItem = null, searchQuery = "", onSuccess = false) }
-    }
 
 
     private fun updateUiState(update: SearchScreenState.() -> SearchScreenState) {

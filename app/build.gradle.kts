@@ -127,7 +127,7 @@ dependencies {
     implementation(libs.retrofit2.gson)
     implementation(libs.okhttp3.okhttp)
     implementation(libs.okhttp3.logging)
-    implementation("com.wajahatkarim:flippable:1.5.4")
+    implementation("org.jsoup:jsoup:1.14.3")
 
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)

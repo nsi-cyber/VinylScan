@@ -1,12 +1,9 @@
 package com.nsicyber.vinylscan.domain.mapFunc
 
-import com.nsicyber.vinylscan.data.model.response.discogs.getMasterDetail.GetMasterDetailResponse
-import com.nsicyber.vinylscan.data.model.response.discogs.getMasterDetail.MasterTracklist
 import com.nsicyber.vinylscan.data.model.response.discogs.getReleaseDetail.GetReleaseDetailResponse
 import com.nsicyber.vinylscan.data.model.response.discogs.getReleaseDetail.ReleaseTracklist
 import com.nsicyber.vinylscan.domain.model.VinylModel
 import com.nsicyber.vinylscan.domain.model.VinylTrackModel
-
 
 
 fun GetReleaseDetailResponse?.toVinylModel(): VinylModel {
