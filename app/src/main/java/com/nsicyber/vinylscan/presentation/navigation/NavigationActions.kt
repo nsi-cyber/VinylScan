@@ -14,11 +14,13 @@ class NavigationActions(private val navController: NavHostController) {
             popUpToTop(navController)
         }
     }
+
     fun navigateToSearchScreen() {
         navController.navigate(Constants.Destination.SEARCH_SCREEN) {
             popUpToTop(navController)
         }
     }
+
     fun navigateToDetailScreen() {
         navController.navigate(Constants.Destination.DETAIL_SCREEN) {
             popUpToTop(navController)

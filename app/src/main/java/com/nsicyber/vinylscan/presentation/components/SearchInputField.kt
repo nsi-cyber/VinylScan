@@ -39,7 +39,8 @@ fun SearchInputField(
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.height(48.dp)
+        modifier = Modifier
+            .height(48.dp)
             .fillMaxWidth()
             .shadow(4.dp)
             .clip(RoundedCornerShape(8.dp))
@@ -66,7 +67,9 @@ fun SearchInputField(
                     focusedIndicatorColor = Color.White,
                     unfocusedIndicatorColor = Color.White
                 ),
-                modifier = Modifier.fillMaxSize().weight(1f)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
                     .focusRequester(focusRequester)
                     .background(color = Color.White)
             )

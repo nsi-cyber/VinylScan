@@ -121,7 +121,7 @@ class CameraViewModel @Inject constructor(
                             getReleaseDiscogsDetail(
                                 releaseId = result.data?.results?.firstOrNull()?.id,
 
-                            )
+                                )
 
 
                         }
@@ -190,52 +190,52 @@ class CameraViewModel @Inject constructor(
 
      */
 
-/*
-    private fun getMasterDiscogsDetail(
-        masterId: Int?,
-        thumbnail: String?,
-        barcode: String?
-    ) {
+    /*
+        private fun getMasterDiscogsDetail(
+            masterId: Int?,
+            thumbnail: String?,
+            barcode: String?
+        ) {
 
-        viewModelScope.launch {
-            getMasterDetailUseCase(masterId).onStart {
-                updateUiState { copy(isPageLoading = true) }
-            }.onEach { result ->
+            viewModelScope.launch {
+                getMasterDetailUseCase(masterId).onStart {
+                    updateUiState { copy(isPageLoading = true) }
+                }.onEach { result ->
 
-                when (result) {
-                    is ApiResult.Error -> {
-                        showErrorMessage(this@CameraViewModel, result.message)
-                        updateUiState {
-                            copy(
-                                isPageLoading = false,
-                            )
-                        }
-                    }
-
-
-                    is ApiResult.Success ->
-                        updateUiState {
-                            copy(
-                                isPageLoading = false,
-                                onSuccess = true,
-                                vinylModel = result.data?.toVinylModel(thumbnail = thumbnail, barcode = listOf(barcode))
-                            )
+                    when (result) {
+                        is ApiResult.Error -> {
+                            showErrorMessage(this@CameraViewModel, result.message)
+                            updateUiState {
+                                copy(
+                                    isPageLoading = false,
+                                )
+                            }
                         }
 
-                    null -> {
+
+                        is ApiResult.Success ->
+                            updateUiState {
+                                copy(
+                                    isPageLoading = false,
+                                    onSuccess = true,
+                                    vinylModel = result.data?.toVinylModel(thumbnail = thumbnail, barcode = listOf(barcode))
+                                )
+                            }
+
+                        null -> {
 
 
+                        }
                     }
-                }
-            }.launchIn(this)
+                }.launchIn(this)
+            }
+
+
         }
 
 
-    }
 
-
-
- */
+     */
     private fun getReleaseDiscogsDetail(
         releaseId: Int?,
     ) {

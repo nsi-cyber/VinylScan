@@ -27,7 +27,7 @@ class MediaPlayerViewModel @Inject constructor(private var mediaPlayerRepository
         mediaPlayerRepository.onInfo(
             onFinish = {
                 isBuffering = false
-                       },
+            },
             onStart = {
                 isBuffering = true
             })

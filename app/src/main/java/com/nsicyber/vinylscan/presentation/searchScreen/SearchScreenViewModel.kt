@@ -46,14 +46,26 @@ constructor(
                     searchWithDebounce(event.query)
                 else if (event.query.isEmpty()) {
                     searchJob?.cancel()
-                    updateUiState { copy(searchSearchResultItem = null, searchQuery = "", onSuccess = false) }
+                    updateUiState {
+                        copy(
+                            searchSearchResultItem = null,
+                            searchQuery = "",
+                            onSuccess = false
+                        )
+                    }
 
                 }
             }
 
             SearchScreenEvent.SetStateEmpty -> {
                 searchJob?.cancel()
-                updateUiState { copy(searchSearchResultItem = null, searchQuery = "", onSuccess = false) }
+                updateUiState {
+                    copy(
+                        searchSearchResultItem = null,
+                        searchQuery = "",
+                        onSuccess = false
+                    )
+                }
 
             }
 
@@ -62,7 +74,7 @@ constructor(
                     event.index
                 )?.id,
 
-            )
+                )
 
             SearchScreenEvent.DetailOpened -> {
                 searchJob?.cancel()
@@ -76,7 +88,7 @@ constructor(
     private fun getAlbumDiscogsDetail(
         releaseId: Int?,
 
-    ) {
+        ) {
 
         viewModelScope.launch {
             getReleaseDetailUseCase(releaseId).onStart {
@@ -161,7 +173,6 @@ constructor(
             getSearchResults(query)
         }
     }
-
 
 
     private fun updateUiState(update: SearchScreenState.() -> SearchScreenState) {

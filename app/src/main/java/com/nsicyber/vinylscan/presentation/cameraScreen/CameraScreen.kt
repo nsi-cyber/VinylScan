@@ -154,7 +154,7 @@ fun CameraScreen(
                             .padding(horizontal = 32.dp)
                             .clip(RoundedCornerShape(20.dp))
                             .align(Alignment.Center)
-                             .padding(32.dp)
+                            .padding(32.dp)
                             .onGloballyPositioned { layoutCoordinates ->
                                 columnSize = layoutCoordinates.size
                             },
@@ -164,7 +164,8 @@ fun CameraScreen(
                         Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
                             repeat(40) {
                                 Box(
-                                    modifier = Modifier.alpha(0.3f)
+                                    modifier = Modifier
+                                        .alpha(0.3f)
                                         .height(50.dp)
                                         .width(2.dp)
                                         .background(Color.Black)
@@ -214,7 +215,6 @@ fun CameraScreen(
                             contentDescription = ""
                         )
                     }
-
 
 
                 }
