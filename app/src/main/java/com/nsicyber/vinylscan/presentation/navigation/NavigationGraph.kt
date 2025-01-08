@@ -7,9 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -39,14 +37,10 @@ fun NavigationGraph(
     ) {
 
 
-    val isMenuShow = remember { mutableStateOf(false) }
-    val focusManager = LocalFocusManager.current
-
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination?.route
 
     val vinylModel = remember { mutableStateOf<VinylModel?>(null) }
-    val scope = rememberCoroutineScope()
 
     Scaffold { innerPadding ->
 
@@ -68,7 +62,7 @@ fun NavigationGraph(
                     },
                     navigateToSearch = {
 
-                          navActions.navigateToSearchScreen()
+                        navActions.navigateToSearchScreen()
                     },
                 )
             }

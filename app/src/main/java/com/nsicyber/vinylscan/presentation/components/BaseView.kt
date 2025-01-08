@@ -242,7 +242,7 @@ fun PopupHost(
 }
 
 @Composable
-fun LottieView(modifier: Modifier,res:Int){
+fun LottieView(modifier: Modifier, res: Int) {
     val preloaderLottieComposition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(
             res
@@ -254,11 +254,13 @@ fun LottieView(modifier: Modifier,res:Int){
         iterations = LottieConstants.IterateForever,
         isPlaying = true
     )
-Box(modifier){  LottieAnimation(
-    composition = preloaderLottieComposition,
-    progress = preloaderProgress,
-    modifier = modifier
-)}
+    Box(modifier) {
+        LottieAnimation(
+            composition = preloaderLottieComposition,
+            progress = preloaderProgress,
+            modifier = modifier
+        )
+    }
 
 }
 

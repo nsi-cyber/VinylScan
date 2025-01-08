@@ -20,8 +20,8 @@ android {
         applicationId = "com.nsicyber.vinylscan"
         minSdk = 26
         targetSdk = 35
-        versionCode = 5
-        versionName = "0.1.5"
+        versionCode = 6
+        versionName = "0.5.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -120,15 +120,12 @@ dependencies {
     implementation(libs.tensorflow.lite)
     implementation(libs.play.services.gcm)
     implementation(libs.barcode.scanning)
-
     implementation(libs.coil.compose)
-
     implementation(libs.retrofit2.retrofit)
     implementation(libs.retrofit2.gson)
     implementation(libs.okhttp3.okhttp)
     implementation(libs.okhttp3.logging)
-    implementation("org.jsoup:jsoup:1.14.3")
-
+    implementation(libs.jsoup)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
     implementation(libs.composed.barcodes)

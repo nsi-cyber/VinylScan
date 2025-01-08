@@ -97,7 +97,10 @@ fun DetailScreen(
     LaunchedEffect(detailState.onBottomSheetError) {
         if (detailState.onBottomSheetError == true) {
 
-            Toast.makeText(context, "Track data cant find", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                context.getString(R.string.track_data_not_found), Toast.LENGTH_SHORT
+            ).show()
             scope.launch {
                 bottomSheetState.bottomSheetState.hide()
 
@@ -305,7 +308,7 @@ fun DetailScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(start = 16.dp),
-                            text = "Catalog",
+                            text = stringResource(R.string.catalog),
                             color = Color.Gray,
                             fontSize = 16.sp,
                             textAlign = TextAlign.Start,
@@ -330,7 +333,7 @@ fun DetailScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(start = 16.dp),
-                            text = "Vinyl Count",
+                            text = stringResource(R.string.lp_count),
                             color = Color.Gray,
                             fontSize = 16.sp,
                             textAlign = TextAlign.Start,
@@ -436,7 +439,7 @@ fun DetailScreen(
                 data?.totalTime?.takeIf { !it.isNullOrEmpty() }?.let {
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text(
-                            text = "Toplam Süre",
+                            text = stringResource(R.string.total_time),
                             color = Color.Gray,
                             fontSize = 16.sp,
                             textAlign = TextAlign.Start,
@@ -555,7 +558,7 @@ fun DetailScreen(
 
                 Column {
                     Text(
-                        text = "Listen on",
+                        text = stringResource(R.string.listen_on),
                         color = Color.White,
                         fontSize = 18.sp,
                         textAlign = TextAlign.Start,
@@ -567,19 +570,21 @@ fun DetailScreen(
                     Row {
 
                         Column(
-                            modifier = Modifier.clip(RoundedCornerShape(20.dp)) .clickable {
-                                scope.launch {
-                                    openExternalMusicLinkFromGoogle(
-                                        context = context,
-                                        query = ("${data?.artistName}+${data?.title}").replace(
-                                            "\\s".toRegex(),
-                                            "+"
-                                        ),
-                                        type = ExternalWebsites.SPOTIFY
-                                    )
-                                }
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(20.dp))
+                                .clickable {
+                                    scope.launch {
+                                        openExternalMusicLinkFromGoogle(
+                                            context = context,
+                                            query = ("${data?.artistName}+${data?.title}").replace(
+                                                "\\s".toRegex(),
+                                                "+"
+                                            ),
+                                            type = ExternalWebsites.SPOTIFY
+                                        )
+                                    }
 
-                            }
+                                }
                                 .fillMaxWidth()
                                 .padding(16.dp)
                                 .weight(0.33f)
@@ -592,8 +597,9 @@ fun DetailScreen(
                                 painter = painterResource(R.drawable.icon_spotify),
                                 contentDescription = ""
                             )
-                            Text(modifier = Modifier.fillMaxWidth(),
-                                text = "Spotify",
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = stringResource(R.string.spotify),
                                 color = Color.White,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Normal,
@@ -602,19 +608,21 @@ fun DetailScreen(
                         }
 
                         Column(
-                            modifier = Modifier.clip(RoundedCornerShape(20.dp)) .clickable {
-                                scope.launch {
-                                    openExternalMusicLinkFromGoogle(
-                                        context = context,
-                                        query = ("${data?.artistName}+${data?.title}").replace(
-                                            "\\s".toRegex(),
-                                            "+"
-                                        ),
-                                        type = ExternalWebsites.APPLE_MUSIC
-                                    )
-                                }
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(20.dp))
+                                .clickable {
+                                    scope.launch {
+                                        openExternalMusicLinkFromGoogle(
+                                            context = context,
+                                            query = ("${data?.artistName}+${data?.title}").replace(
+                                                "\\s".toRegex(),
+                                                "+"
+                                            ),
+                                            type = ExternalWebsites.APPLE_MUSIC
+                                        )
+                                    }
 
-                            }
+                                }
                                 .fillMaxWidth()
                                 .padding(16.dp)
                                 .weight(0.33f)
@@ -627,8 +635,9 @@ fun DetailScreen(
                                 painter = painterResource(R.drawable.icon_apple_music),
                                 contentDescription = ""
                             )
-                            Text(modifier = Modifier.fillMaxWidth(),
-                                text = "Apple Music",
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = stringResource(R.string.apple_music),
                                 color = Color.White,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Normal,
@@ -636,19 +645,21 @@ fun DetailScreen(
                             )
                         }
                         Column(
-                            modifier = Modifier.clip(RoundedCornerShape(20.dp)) .clickable {
-                                scope.launch {
-                                    openExternalMusicLinkFromGoogle(
-                                        context = context,
-                                        query = ("${data?.artistName}+${data?.title}").replace(
-                                            "\\s".toRegex(),
-                                            "+"
-                                        ),
-                                        type = ExternalWebsites.YOUTUBE_MUSIC
-                                    )
-                                }
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(20.dp))
+                                .clickable {
+                                    scope.launch {
+                                        openExternalMusicLinkFromGoogle(
+                                            context = context,
+                                            query = ("${data?.artistName}+${data?.title}").replace(
+                                                "\\s".toRegex(),
+                                                "+"
+                                            ),
+                                            type = ExternalWebsites.YOUTUBE_MUSIC
+                                        )
+                                    }
 
-                            }
+                                }
                                 .fillMaxWidth()
                                 .padding(16.dp)
                                 .weight(0.33f)
@@ -661,8 +672,9 @@ fun DetailScreen(
                                 painter = painterResource(R.drawable.icon_youtube_music),
                                 contentDescription = ""
                             )
-                            Text(modifier = Modifier.fillMaxWidth(),
-                                text = "Youtube Music",
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = stringResource(R.string.youtube_music),
                                 color = Color.White,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Normal,
@@ -672,8 +684,6 @@ fun DetailScreen(
                     }
 
                 }
-
-
 
 
             }

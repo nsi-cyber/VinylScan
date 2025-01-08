@@ -8,7 +8,7 @@ import com.nsicyber.vinylscan.domain.model.VinylTrackModel
 
 fun GetReleaseDetailResponse?.toVinylModel(): VinylModel {
     return VinylModel(
-         title = this?.title.orEmpty(),
+        title = this?.title.orEmpty(),
         vinylQuantity = this?.format_quantity,
         releaseDate = this?.released,
         artistName = this?.artists_sort.orEmpty(),
@@ -30,8 +30,6 @@ fun GetReleaseDetailResponse?.toVinylModel(): VinylModel {
         minPrice = this?.lowest_price.toString()
     )
 }
-
-
 
 
 fun ReleaseTracklist?.toVinylTrackModel(albumName: String?, artistName: String?): VinylTrackModel {

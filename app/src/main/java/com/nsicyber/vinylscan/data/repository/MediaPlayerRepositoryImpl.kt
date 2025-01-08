@@ -11,7 +11,6 @@ class MediaPlayerRepositoryImpl @Inject constructor() : MediaPlayerRepository {
     var mediaPlayer = MediaPlayer()
 
 
-
     override fun play() {
         mediaPlayer.prepare()
         AudioAttributes.Builder()
@@ -25,7 +24,7 @@ class MediaPlayerRepositoryImpl @Inject constructor() : MediaPlayerRepository {
         mediaPlayer.start()
     }
 
-    override fun onInfo(onStart:()->Unit,onFinish: () -> Unit) {
+    override fun onInfo(onStart: () -> Unit, onFinish: () -> Unit) {
         mediaPlayer.setOnPreparedListener {
             onFinish()
         }

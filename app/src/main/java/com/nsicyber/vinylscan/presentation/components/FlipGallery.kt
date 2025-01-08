@@ -58,14 +58,12 @@ fun FlipGallery(imageUrls: List<String?>) {
             .pointerInput(Unit) {
                 detectHorizontalDragGestures(
                     onDragEnd = {
-                        // Parmağı bıraktığınızda hedef açıyı belirle
                         val targetAngle = when {
                             flipAngle.value > 90 -> 180f
                             flipAngle.value < -90 -> -180f
                             else -> 0f
                         }
 
-                        // Animasyonu başlat
                         scope.launch {
                             flipAngle.animateTo(
                                 targetValue = targetAngle,
@@ -75,17 +73,15 @@ fun FlipGallery(imageUrls: List<String?>) {
                                 )
                             )
 
-                            // Sayfa değişimi ve sıfırlama
                             if (targetAngle == 180f) {
                                 currentIndex = (currentIndex + 1) % imageUrls.size
                             } else if (targetAngle == -180f) {
                                 currentIndex = (currentIndex - 1 + imageUrls.size) % imageUrls.size
                             }
-                            flipAngle.snapTo(0f) // Yeni resim için açıyı sıfırla
+                            flipAngle.snapTo(0f)
                         }
                     },
                     onHorizontalDrag = { _, dragAmount ->
-                        // El hareketine göre açıyı güncelle
                         scope.launch {
                             flipAngle.snapTo(
                                 (flipAngle.value + dragAmount / 3).coerceIn(-180f, 180f)
@@ -108,7 +104,6 @@ fun FlipGallery(imageUrls: List<String?>) {
             contentAlignment = Alignment.Center
         ) {
             if (flipAngle.value <= 90 && flipAngle.value >= -90) {
-                // Ön yüz
                 AsyncImage(
                     model = imageUrls[currentIndex],
                     contentDescription = "Image $currentIndex",
@@ -118,7 +113,6 @@ fun FlipGallery(imageUrls: List<String?>) {
                     contentScale = ContentScale.Crop
                 )
             } else {
-                // Arka yüz (bir sonraki veya önceki resim)
                 val nextIndex = if (flipAngle.value > 0) {
                     (currentIndex + 1) % imageUrls.size
                 } else {

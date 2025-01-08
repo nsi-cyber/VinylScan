@@ -21,7 +21,7 @@ interface DiscogsNetworkRepository {
         masterId: Int?,
     ): Flow<ApiResult<GetMasterDetailResponse?>?>
 
-  fun getReleaseDetail(
+    fun getReleaseDetail(
         releaseId: Int?,
     ): Flow<ApiResult<GetReleaseDetailResponse?>?>
 

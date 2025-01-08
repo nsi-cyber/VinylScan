@@ -13,8 +13,8 @@ interface MediaPlayerRepository {
 
     fun resume()
 
-    fun onInfo(onStart:()->Unit,onFinish: () -> Unit)
-    fun onFinish(onFinish:()->Unit)
+    fun onInfo(onStart: () -> Unit, onFinish: () -> Unit)
+    fun onFinish(onFinish: () -> Unit)
 
     fun setUrl(uri: String?)
 

@@ -28,11 +28,13 @@ class DiscogsNetworkRepositoryImpl @Inject constructor(
         api.searchVinyl(query = query)
     }
 
-    override fun getMasterDetail(masterId: Int?): Flow<ApiResult<GetMasterDetailResponse?>?> = apiFlow {
-        api.getMasterDetail(masterId = masterId)
-    }
+    override fun getMasterDetail(masterId: Int?): Flow<ApiResult<GetMasterDetailResponse?>?> =
+        apiFlow {
+            api.getMasterDetail(masterId = masterId)
+        }
 
-    override fun getReleaseDetail(releaseId: Int?): Flow<ApiResult<GetReleaseDetailResponse?>?> = apiFlow {
-        api.getReleaseDetail(releaseId = releaseId)
-    }
+    override fun getReleaseDetail(releaseId: Int?): Flow<ApiResult<GetReleaseDetailResponse?>?> =
+        apiFlow {
+            api.getReleaseDetail(releaseId = releaseId)
+        }
 }
