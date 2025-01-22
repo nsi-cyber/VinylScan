@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -65,6 +66,7 @@ fun CameraScreen(
     applicationContext: Context,
     navigateToDetail: (data: VinylModel?) -> Unit,
     navigateToSearch: () -> Unit,
+    navigateToFavorites: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val state by cameraViewModel.cameraState.collectAsState()
@@ -212,6 +214,25 @@ fun CameraScreen(
                     ) {
                         Image(
                             imageVector = Icons.Default.Search,
+                            contentDescription = ""
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(16.dp)
+                            .size(48.dp)
+                            .clip(
+                                RoundedCornerShape(20.dp)
+                            )
+
+                            .background(Color.White.copy(alpha = 0.7f))
+
+                            .clickable { navigateToFavorites() }
+                            .padding(12.dp)
+                    ) {
+                        Image(
+                            imageVector = Icons.Default.Star,
                             contentDescription = ""
                         )
                     }

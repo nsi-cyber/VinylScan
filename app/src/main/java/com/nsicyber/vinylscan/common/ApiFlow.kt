@@ -29,3 +29,17 @@ fun <T> apiFlow(call: suspend () -> Response<T>?): Flow<ApiResult<T>> =
             emit(ApiResult.Error(e.message ?: "An error occurred"))
         }
     }.flowOn(Dispatchers.IO)
+
+
+
+
+fun <T> daoFlow(call: suspend () -> T): Flow<DaoResult<T>> =
+    flow {
+        try {
+            val result = call()
+            emit(DaoResult.Success(result))
+        } catch (e: Exception) {
+            Log.e("DaoFlow", e.message ?: "An error occurred")
+            emit(DaoResult.Error(e.message ?: "An error occurred"))
+        }
+    }.flowOn(Dispatchers.IO)

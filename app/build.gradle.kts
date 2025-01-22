@@ -101,6 +101,9 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.dagger.hilt)
     ksp(libs.dagger.hilt.compiler)
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation(libs.androidx.room.ktx)
+
     ksp(libs.androidx.room.compiler)
     annotationProcessor(libs.compiler)
     implementation(libs.androidx.work.runtime.ktx)

@@ -27,6 +27,12 @@ class NavigationActions(private val navController: NavHostController) {
         }
     }
 
+    fun navigateToFavoritesScreen() {
+        navController.navigate(Constants.Destination.FAVORITES_SCREEN) {
+            popUpToTop(navController)
+        }
+    }
+
 
     fun popBackStack() {
         navController.popBackStack()

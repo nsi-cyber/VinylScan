@@ -20,6 +20,7 @@ import com.nsicyber.vinylscan.presentation.cameraScreen.CameraEvent
 import com.nsicyber.vinylscan.presentation.cameraScreen.CameraScreen
 import com.nsicyber.vinylscan.presentation.cameraScreen.CameraViewModel
 import com.nsicyber.vinylscan.presentation.detailScreen.DetailScreen
+import com.nsicyber.vinylscan.presentation.favoriteScreen.FavoriteScreen
 import com.nsicyber.vinylscan.presentation.searchScreen.SearchScreen
 
 @Composable
@@ -61,9 +62,10 @@ fun NavigationGraph(
                         navActions.navigateToDetailScreen()
                     },
                     navigateToSearch = {
-
                         navActions.navigateToSearchScreen()
-                    },
+                    }, navigateToFavorites = {
+                        navActions.navigateToFavoritesScreen()
+                    }
                 )
             }
 
@@ -83,6 +85,7 @@ fun NavigationGraph(
 
 
             composable(route = Constants.Destination.SEARCH_SCREEN) {
+
                 SearchScreen(
                     onBackPressed = {
                         cameraViewModel.onEvent(CameraEvent.SetStateEmpty)
@@ -93,6 +96,22 @@ fun NavigationGraph(
                         navActions.navigateToDetailScreen()
                     }
                 )
+
+            }
+
+            composable(route = Constants.Destination.FAVORITES_SCREEN) {
+
+                FavoriteScreen(
+                    onBackPressed = {
+                        cameraViewModel.onEvent(CameraEvent.SetStateEmpty)
+                        navActions.popBackStack()
+                    },
+                    onDetail = {
+                        vinylModel.value = it
+                        navActions.navigateToDetailScreen()
+                    }
+                )
+
             }
 
 

@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,7 +34,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import com.nsicyber.vinylscan.R
+import com.nsicyber.vinylscan.domain.mapFunc.toSearchModel
 import com.nsicyber.vinylscan.domain.model.VinylModel
 import com.nsicyber.vinylscan.presentation.components.BaseView
 import com.nsicyber.vinylscan.presentation.components.SearchCard
@@ -54,6 +58,24 @@ fun SearchScreen(
 
     val focusRequester = remember { FocusRequester() }
 
+
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val lifecycleObserver = object : DefaultLifecycleObserver {
+
+            override fun onResume(owner: LifecycleOwner) {
+                searchScreenViewModel.onEvent(SearchScreenEvent.LoadScreen)
+            }
+
+        }
+
+        lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
+        }
+    }
+
     LaunchedEffect(Unit) {
         snapshotFlow { focusRequester }
             .collect {
@@ -67,6 +89,10 @@ fun SearchScreen(
             searchScreenViewModel.onEvent(SearchScreenEvent.DetailOpened)
         }
     }
+
+
+
+
 
     BaseView(isPageLoading = searchScreenState.isPageLoading,
 
@@ -115,24 +141,55 @@ fun SearchScreen(
                     contentPadding = PaddingValues(vertical = 32.dp)
                 ) {
 
-                    if (searchScreenState.searchSearchResultItem.isNullOrEmpty() &&
+                    if (searchScreenState.searchSearchResultList.isNullOrEmpty() &&
                         !searchScreenState.searchQuery.isNullOrBlank() && !searchScreenState.isPageLoading
                     ) {
                         item {
-                            Text(text = stringResource(R.string.no_result_found), color = Color.White)
+                            Text(
+                                text = stringResource(R.string.no_result_found),
+                                color = Color.White
+                            )
                         }
                     }
 
                     itemsIndexed(
-                        searchScreenState.searchSearchResultItem ?: listOf()
+                        searchScreenState.searchSearchResultList ?: listOf()
                     ) { index, data ->
                         SearchCard(
                             data,
                             onItemClick = {
-                                searchScreenViewModel.onEvent(
-                                    SearchScreenEvent.OpenDetail(index)
-                                )
+                                data?.id?.let {
+                                    searchScreenViewModel.onEvent(
+                                        SearchScreenEvent.OpenDetail(it)
+                                    )
+                                }
                             })
+                    }
+                    if (searchScreenState.searchQuery.isNullOrBlank() && searchScreenState.recentlyViewedList?.isNullOrEmpty() == false) {
+                        item {
+                            Text(text = stringResource(R.string.recently_viewed), color = Color.White)
+                        }
+                        itemsIndexed(
+                            searchScreenState.recentlyViewedList ?: listOf()
+                        ) { index, data ->
+                            SearchCard(
+                                data.toSearchModel(),
+                                onItemClick = {
+                                    data?.id?.let {
+                                        searchScreenViewModel.onEvent(
+                                            SearchScreenEvent.OpenDetail(it)
+                                        )
+                                    }
+
+                                })
+                        }
+
+                    } else if (searchScreenState.searchQuery.isNullOrBlank() && searchScreenState.recentlyViewedList?.isNullOrEmpty() == true) {
+
+
+                        item {
+                            Text(text = stringResource(R.string.search_for_vinyl_records), color = Color.White)
+                        }
                     }
                 }
             }

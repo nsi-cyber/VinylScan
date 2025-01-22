@@ -5,6 +5,7 @@ object Constants {
         const val CAMERA_SCREEN = "camera_screen"
         const val DETAIL_SCREEN = "detail_screen"
         const val SEARCH_SCREEN = "search_screen"
+        const val FAVORITES_SCREEN = "favorites_screen"
     }
 
 

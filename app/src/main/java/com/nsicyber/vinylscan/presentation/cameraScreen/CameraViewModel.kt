@@ -8,9 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.mlkit.vision.common.InputImage
 import com.nsicyber.vinylscan.common.ApiResult
+import com.nsicyber.vinylscan.domain.mapFunc.toDatabase
 import com.nsicyber.vinylscan.domain.mapFunc.toVinylModel
-import com.nsicyber.vinylscan.domain.useCases.GetMasterDetailUseCase
 import com.nsicyber.vinylscan.domain.useCases.GetReleaseDetailUseCase
+import com.nsicyber.vinylscan.domain.useCases.InsertRecentlyViewedUseCase
 import com.nsicyber.vinylscan.domain.useCases.RecognizeBarcodeUseCase
 import com.nsicyber.vinylscan.domain.useCases.SearchBarcodeUseCase
 import com.nsicyber.vinylscan.presentation.components.BaseViewModel
@@ -20,6 +21,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -31,7 +33,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CameraViewModel @Inject constructor(
     private val recognizeBarcodeUseCase: RecognizeBarcodeUseCase,
-    private val getMasterDetailUseCase: GetMasterDetailUseCase,
+    private val insertRecentlyViewedUseCase: InsertRecentlyViewedUseCase,
     private val getReleaseDetailUseCase: GetReleaseDetailUseCase,
     private val searchBarcodeUseCase: SearchBarcodeUseCase,
 ) : BaseViewModel() {
@@ -145,97 +147,6 @@ class CameraViewModel @Inject constructor(
     }
 
 
-    /*
-
-        private fun getAlbumDeezerDetail(
-            id: String?,
-        ) {
-
-            viewModelScope.launch {
-                getAlbumDetailUseCase(id).onStart {
-                    updateUiState { copy(isPageLoading = true) }
-                }.onEach { result ->
-
-                    when (result) {
-                        is ApiResult.Error -> {
-                            showErrorMessage(this@CameraViewModel, result.message)
-                            updateUiState {
-                                copy(
-                                    isPageLoading = false,
-                                )
-                            }
-                        }
-
-
-                        is ApiResult.Success ->
-                            updateUiState {
-                                copy(
-                                    isPageLoading = false,
-                                    onSuccess = true,
-                                    deezerAlbumDetail = result.data,
-                                )
-                            }
-
-                        null -> {
-
-
-                        }
-                    }
-                }.launchIn(this)
-            }
-
-
-        }
-
-
-     */
-
-    /*
-        private fun getMasterDiscogsDetail(
-            masterId: Int?,
-            thumbnail: String?,
-            barcode: String?
-        ) {
-
-            viewModelScope.launch {
-                getMasterDetailUseCase(masterId).onStart {
-                    updateUiState { copy(isPageLoading = true) }
-                }.onEach { result ->
-
-                    when (result) {
-                        is ApiResult.Error -> {
-                            showErrorMessage(this@CameraViewModel, result.message)
-                            updateUiState {
-                                copy(
-                                    isPageLoading = false,
-                                )
-                            }
-                        }
-
-
-                        is ApiResult.Success ->
-                            updateUiState {
-                                copy(
-                                    isPageLoading = false,
-                                    onSuccess = true,
-                                    vinylModel = result.data?.toVinylModel(thumbnail = thumbnail, barcode = listOf(barcode))
-                                )
-                            }
-
-                        null -> {
-
-
-                        }
-                    }
-                }.launchIn(this)
-            }
-
-
-        }
-
-
-
-     */
     private fun getReleaseDiscogsDetail(
         releaseId: Int?,
     ) {
@@ -256,7 +167,9 @@ class CameraViewModel @Inject constructor(
                     }
 
 
-                    is ApiResult.Success ->
+                    is ApiResult.Success -> {
+                        insertRecentlyViewedUseCase(item = result.data.toDatabase()).collect()
+
                         updateUiState {
                             copy(
                                 isPageLoading = false,
@@ -264,6 +177,7 @@ class CameraViewModel @Inject constructor(
                                 vinylModel = result.data?.toVinylModel()
                             )
                         }
+                    }
 
                     null -> {
 
@@ -285,5 +199,4 @@ fun showErrorMessage(viewModel: ViewModel, message: String) {
     viewModel.viewModelScope.launch {
         SnackbarController.sendEvent(event = SnackbarEvent(message = message))
     }
-
 }

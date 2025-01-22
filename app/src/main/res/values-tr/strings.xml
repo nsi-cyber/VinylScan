@@ -16,4 +16,9 @@
     <string name="no_result_found">Sonuç bulunamadı</string>
     <string name="track_data_not_found">Parça verisi bulunamadı</string>
     <string name="release_date">Çıkış Tarihi</string>
+    <string name="favorites">Favoriler</string>
+    <string name="no_favorites_yet">Henüz favori yok</string>
+    <string name="recently_viewed">Son görüntülenenler</string>
+    <string name="search_for_vinyl_records">Plak ara</string>
+
 </resources>

@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetValue
@@ -77,6 +79,7 @@ fun DetailScreen(
 ) {
     val scope = rememberCoroutineScope()
     val detailState by detailViewModel.detailScreenState.collectAsState()
+    val favoriteState by detailViewModel.isFavorite.collectAsState()
     val context = LocalContext.current
 
     val bottomSheetType = remember { mutableStateOf(BottomSheetType.PREVIEW) }
@@ -90,7 +93,7 @@ fun DetailScreen(
 
     LaunchedEffect(Unit) {
         cameraViewModel.onEvent(CameraEvent.SetStateEmpty)
-
+        detailViewModel.onEvent(DetailScreenEvent.LoadScreen(data?.id))
     }
 
 
@@ -196,7 +199,7 @@ fun DetailScreen(
     }
 
     BaseView(isPageLoading = detailState.isPageLoading,
-modifier = Modifier.background(Color.Black),
+        modifier = Modifier.background(Color.Black),
         bottomSheetState = bottomSheetState,
         bottomSheetContent = {
             when (bottomSheetType.value) {
@@ -238,6 +241,32 @@ modifier = Modifier.background(Color.Black),
                             Image(
                                 painter = painterResource(R.drawable.ic_arrow_left),
                                 contentDescription = ""
+                            )
+                        }
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.BottomStart)
+                                .padding(16.dp)
+                                .size(48.dp)
+                                .clip(
+                                    RoundedCornerShape(20.dp)
+                                )
+                                .background(Color.White.copy(alpha = 0.7f))
+                                .clickable {
+                                    detailViewModel.onEvent(
+                                        DetailScreenEvent.ToggleFavorite(
+                                            data
+                                        )
+                                    )
+                                }
+                                .padding(12.dp)
+                        ) {
+                            Image(
+                                imageVector = Icons.Default.Star,
+                                contentDescription = "",
+                                colorFilter = if (favoriteState == false) ColorFilter.tint(
+                                    Color.White
+                                ) else ColorFilter.tint(Color.Black)
                             )
                         }
 
@@ -477,7 +506,7 @@ modifier = Modifier.background(Color.Black),
                                             mediaPlayerViewModel.stopMediaPlayer()
                                             bottomSheetType.value = BottomSheetType.PREVIEW
                                             detailViewModel.onEvent(
-                                                DetailScreenEvent.LoadScreen(
+                                                DetailScreenEvent.LoadTrack(
                                                     query = "${
                                                         it?.get(
                                                             trackIndex

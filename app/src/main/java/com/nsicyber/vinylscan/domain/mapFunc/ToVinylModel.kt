@@ -1,13 +1,17 @@
 package com.nsicyber.vinylscan.domain.mapFunc
 
+import com.nsicyber.vinylscan.common.formatDate
+import com.nsicyber.vinylscan.data.database.entity.RecentlyViewedEntity
 import com.nsicyber.vinylscan.data.model.response.discogs.getReleaseDetail.GetReleaseDetailResponse
 import com.nsicyber.vinylscan.data.model.response.discogs.getReleaseDetail.ReleaseTracklist
+import com.nsicyber.vinylscan.data.model.response.discogs.getSearch.SearchResultItem
+import com.nsicyber.vinylscan.domain.model.RecentlyViewedModel
 import com.nsicyber.vinylscan.domain.model.VinylModel
 import com.nsicyber.vinylscan.domain.model.VinylTrackModel
 
 
 fun GetReleaseDetailResponse?.toVinylModel(): VinylModel {
-    return VinylModel(
+    return VinylModel(id = this?.id,
         title = this?.title.orEmpty(),
         vinylQuantity = this?.format_quantity,
         releaseDate = this?.released,
@@ -27,7 +31,30 @@ fun GetReleaseDetailResponse?.toVinylModel(): VinylModel {
         totalTime = calculateTotalTime(this?.tracklist?.map { it?.duration }),
         images = this?.images?.map { it?.uri },
         catalog = this?.labels?.firstOrNull { !it?.catno.isNullOrEmpty() }?.catno.orEmpty(),
-        minPrice = this?.lowest_price.toString()
+        minPrice = this?.lowest_price.toString(),
+        year = this?.year.toString()
+    )
+}
+
+
+fun GetReleaseDetailResponse?.toDatabase(): RecentlyViewedEntity {
+    return RecentlyViewedEntity(
+        id = this?.id ?: 0,
+        title = this?.artists_sort +" - "+this?.title.orEmpty(),
+        releaseDate = this?.year.toString(),
+        imageUrl = this?.images?.firstOrNull()?.uri.orEmpty()
+    )
+}
+
+fun RecentlyViewedModel?.toSearchModel(): SearchResultItem {
+    return SearchResultItem(
+        id = this?.id,
+        title = this?.title.orEmpty(),
+        year = this?.releaseDate,
+        cover_image = this?.image.orEmpty(),
+        type = null,
+        barcode = null,
+        master_id = null
     )
 }
 

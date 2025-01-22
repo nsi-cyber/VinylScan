@@ -16,4 +16,9 @@
     <string name="no_result_found">Keine Ergebnisse gefunden</string>
     <string name="track_data_not_found">Track-Daten nicht gefunden</string>
     <string name="release_date">Veröffentlichungsdatum</string>
+    <string name="favorites">Favoriten</string>
+    <string name="no_favorites_yet">Noch keine Favoriten</string>
+    <string name="recently_viewed">Kürzlich angesehen</string>
+    <string name="search_for_vinyl_records">Nach Schallplatten suchen</string>
+
 </resources>

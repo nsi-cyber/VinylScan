@@ -9,3 +9,9 @@ sealed class ApiResult<out T> {
 data class ApiErrorResponse(
     val clientMessage: String,
 )
+
+sealed class DaoResult<out T> {
+    data class Success<out T>(val data: T?) : DaoResult<T>()
+
+    data class Error(val message: String) : DaoResult<Nothing>()
+}
