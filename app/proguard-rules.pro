@@ -32,8 +32,10 @@
 -keep class * implements java.lang.reflect.InvocationHandler { *; }
 -keep interface * { *; }
 -keep public class com.com.nsicyber.vinylscan.data.model.response.**  { *; }
+-keep public class com.com.nsicyber.vinylscan.data.database.**  { *; }
 -keep public class com.com.nsicyber.vinylscan.domain.**  { *; }
 -keepclassmembers class com.com.nsicyber.vinylscan.data.model.response.**  { *; }
+-keepclassmembers class com.com.nsicyber.vinylscan.data.database.**  { *; }
 -keepclassmembers class com.com.nsicyber.vinylscan.domain.**  { *; }
 -keep,allowobfuscation,allowshrinking interface retrofit2.Call
 -keep,allowobfuscation,allowshrinking class retrofit2.Response
