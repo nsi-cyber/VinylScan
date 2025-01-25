@@ -1,7 +1,5 @@
 package com.nsicyber.vinylscan.presentation.favoriteScreen
 
-import com.nsicyber.vinylscan.presentation.searchScreen.SearchScreenEvent
-
 sealed class FavoriteScreenEvent {
     data object LoadScreen : FavoriteScreenEvent()
     data object SetStateEmpty : FavoriteScreenEvent()

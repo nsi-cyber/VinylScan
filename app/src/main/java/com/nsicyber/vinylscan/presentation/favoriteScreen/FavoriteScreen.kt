@@ -3,7 +3,15 @@ package com.nsicyber.vinylscan.presentation.favoriteScreen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,8 +40,6 @@ import com.nsicyber.vinylscan.R
 import com.nsicyber.vinylscan.domain.model.VinylModel
 import com.nsicyber.vinylscan.presentation.components.BaseView
 import com.nsicyber.vinylscan.presentation.components.EmptyView
-import com.nsicyber.vinylscan.presentation.components.SearchInputField
-import com.nsicyber.vinylscan.presentation.searchScreen.SearchScreenEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,7 +70,8 @@ fun FavoriteScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -106,11 +113,15 @@ fun FavoriteScreen(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        EmptyView(text = stringResource(R.string.no_favorites_yet), icon = R.drawable.ic_empty)
+                        EmptyView(
+                            text = stringResource(R.string.no_favorites_yet),
+                            icon = R.drawable.ic_empty
+                        )
                     }
                 } else {
                     LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(16.dp), contentPadding = PaddingValues(vertical = 16.dp)
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        contentPadding = PaddingValues(vertical = 16.dp)
                     ) {
                         items(favoriteState.favoriteVinyls ?: emptyList()) { vinyl ->
                             Row(

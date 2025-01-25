@@ -29,7 +29,8 @@ fun GetReleaseDetailResponse?.toVinylModel(): VinylModel {
         )?.replace("-".toRegex(), ""),
         totalTime = calculateTotalTime(this?.tracklist?.map { it?.duration }),
         images = this?.images?.map { it?.uri },
-        catalog = this?.labels?.firstOrNull { !it?.catno.isNullOrEmpty() }?.catno.orEmpty(),
+        catalogNo = this?.labels?.firstOrNull { !it?.catno.isNullOrEmpty() }?.catno.orEmpty(),
+        catalogLabel = this?.labels?.firstOrNull { !it?.catno.isNullOrEmpty() }?.name.orEmpty(),
         minPrice = this?.lowest_price.toString(),
         year = this?.year.toString(), formatType = this?.formats?.firstOrNull()?.text.orEmpty()
     )

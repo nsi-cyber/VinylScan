@@ -343,7 +343,7 @@ fun DetailScreen(
                             )
                         }
                     }
-                    data?.catalog?.takeIf { !it.isNullOrBlank() }?.let {
+                    data?.catalogNo?.takeIf { !it.isNullOrBlank() }?.let {
                         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                             Text(
                                 modifier = Modifier
@@ -352,6 +352,16 @@ fun DetailScreen(
                                 text = stringResource(R.string.catalog),
                                 color = Color.Gray,
                                 fontSize = 16.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp),
+                                text = data.catalogLabel.orEmpty(),
+                                color = Color.White,
+                                fontSize = 18.sp,
                                 textAlign = TextAlign.Start,
                                 fontWeight = FontWeight.Normal,
                             )

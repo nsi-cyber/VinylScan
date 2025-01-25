@@ -2,7 +2,7 @@ package com.nsicyber.vinylscan.domain.useCases.favorite
 
 import com.nsicyber.vinylscan.domain.model.FavoriteVinylModel
 import com.nsicyber.vinylscan.domain.repository.DatabaseRepository
- import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetFavoritesUseCase @Inject constructor(

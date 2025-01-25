@@ -12,7 +12,8 @@ data class VinylModel(
     val year: String?,
     val totalTime: String?,
     val barcode: String?,
-    val catalog: String?,
+    val catalogNo: String?,
+    val catalogLabel: String?,
     val minPrice: String?,
     val images: List<String?>?,
     val tracks: List<VinylTrackModel?>?

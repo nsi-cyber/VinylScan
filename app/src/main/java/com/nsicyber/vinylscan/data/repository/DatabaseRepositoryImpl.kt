@@ -35,14 +35,14 @@ class DatabaseRepositoryImpl @Inject constructor(
     }
 
     private fun FavoriteVinylModel.toEntity() = FavoriteVinylEntity(
-         vinylId = vinylId,
+        vinylId = vinylId,
         title = title,
         releaseDate = releaseDate,
         image = image
     )
 
     private fun FavoriteVinylEntity.toDomain() = FavoriteVinylModel(
-         vinylId = vinylId,
+        vinylId = vinylId,
         title = title,
         releaseDate = releaseDate,
         image = image
@@ -54,7 +54,7 @@ class DatabaseRepositoryImpl @Inject constructor(
         }.collect()
     }
 
-    override   fun getRecentlyViewed(): Flow<DaoResult<List<RecentlyViewedEntity>?>> =
+    override fun getRecentlyViewed(): Flow<DaoResult<List<RecentlyViewedEntity>?>> =
         daoFlow { dao.getRecentlyViewed() }
             .map { result ->
                 mapDaoResult(result) { it }

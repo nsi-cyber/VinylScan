@@ -11,7 +11,7 @@ sealed class DetailScreenEvent {
     ) : DetailScreenEvent()
 
     data class LoadScreen(
-        val vinylId:Int?
+        val vinylId: Int?
     ) : DetailScreenEvent()
 
 

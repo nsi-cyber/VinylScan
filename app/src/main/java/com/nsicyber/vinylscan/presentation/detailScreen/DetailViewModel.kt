@@ -44,6 +44,7 @@ class DetailViewModel @Inject constructor(
 
                 getTrackData(event.query)
             }
+
             DetailScreenEvent.SetStateEmpty -> updateUiState {
                 copy(
                     onSuccess = false,
@@ -53,7 +54,7 @@ class DetailViewModel @Inject constructor(
             }
 
             is DetailScreenEvent.ToggleFavorite -> toggleFavorite(event.vinyl)
-            is DetailScreenEvent.LoadScreen ->                 checkFavoriteStatus(event.vinylId)
+            is DetailScreenEvent.LoadScreen -> checkFavoriteStatus(event.vinylId)
 
         }
     }
@@ -74,6 +75,7 @@ class DetailViewModel @Inject constructor(
                             )
                         }
                     }
+
                     is ApiResult.Success -> {
                         updateUiState {
                             copy(
@@ -87,10 +89,11 @@ class DetailViewModel @Inject constructor(
                                     preview = result.data?.data?.firstOrNull()?.preview,
                                     cover = result.data?.data?.firstOrNull()?.md5_image
                                 ),
-                                onBottomSheetError = if (result?.data?.data?.firstOrNull() == null) true else false
+                                onBottomSheetError = if (result.data?.data?.firstOrNull() == null) true else false
                             )
                         }
                     }
+
                     null -> {
                     }
                 }
@@ -98,15 +101,15 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun checkFavoriteStatus(vinylId: Int?) {
+    private fun checkFavoriteStatus(vinylId: Int?) {
         viewModelScope.launch {
-            isFavoriteUseCase(vinylId?:0).collectLatest {
+            isFavoriteUseCase(vinylId ?: 0).collectLatest {
                 _isFavorite.value = it
             }
         }
     }
 
-    fun toggleFavorite(vinyl: VinylModel) {
+    private fun toggleFavorite(vinyl: VinylModel) {
         viewModelScope.launch {
             if (_isFavorite.value) {
                 removeFromFavoritesUseCase(vinyl.id ?: return@launch)
@@ -114,7 +117,7 @@ class DetailViewModel @Inject constructor(
                 addToFavoritesUseCase(
                     FavoriteVinylModel(
                         vinylId = vinyl.id ?: return@launch,
-                        title = vinyl.artistName +" - "+vinyl.title ,
+                        title = vinyl.artistName + " - " + vinyl.title,
                         releaseDate = vinyl.year ?: return@launch,
                         image = vinyl.images?.firstOrNull()
                     )

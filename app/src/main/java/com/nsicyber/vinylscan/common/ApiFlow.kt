@@ -31,8 +31,6 @@ fun <T> apiFlow(call: suspend () -> Response<T>?): Flow<ApiResult<T>> =
     }.flowOn(Dispatchers.IO)
 
 
-
-
 fun <T> daoFlow(call: suspend () -> T): Flow<DaoResult<T>> =
     flow {
         try {

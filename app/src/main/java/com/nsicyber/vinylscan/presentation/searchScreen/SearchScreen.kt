@@ -167,7 +167,10 @@ fun SearchScreen(
                     }
                     if (searchScreenState.searchQuery.isNullOrBlank() && searchScreenState.recentlyViewedList?.isNullOrEmpty() == false) {
                         item {
-                            Text(text = stringResource(R.string.recently_viewed), color = Color.White)
+                            Text(
+                                text = stringResource(R.string.recently_viewed),
+                                color = Color.White
+                            )
                         }
                         itemsIndexed(
                             searchScreenState.recentlyViewedList ?: listOf()
@@ -188,7 +191,10 @@ fun SearchScreen(
 
 
                         item {
-                            Text(text = stringResource(R.string.search_for_vinyl_records), color = Color.White)
+                            Text(
+                                text = stringResource(R.string.search_for_vinyl_records),
+                                color = Color.White
+                            )
                         }
                     }
                 }

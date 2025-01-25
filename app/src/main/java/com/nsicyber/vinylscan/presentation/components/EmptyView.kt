@@ -41,7 +41,7 @@ fun EmptyView(text: String = "asdads asd", icon: Int = R.drawable.ic_empty) {
     ) {
         Column(
             modifier = Modifier.align(Alignment.Center),
-            verticalArrangement = Arrangement.spacedBy(8.dp,Alignment.CenterVertically),
+            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(

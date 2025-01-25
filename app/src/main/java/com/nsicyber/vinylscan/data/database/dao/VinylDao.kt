@@ -20,7 +20,6 @@ interface VinylDao {
     suspend fun clearAllRecentlyViewed()
 
 
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavorite(favorite: FavoriteVinylEntity)
 
