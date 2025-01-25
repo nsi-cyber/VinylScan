@@ -182,11 +182,12 @@ constructor(
                         updateUiState {
                             copy(
                                 searchSearchResultList = result.data?.results
-                                    ?.filter { it?.type == "release" }
+                                  //  ?.filter { it?.type == "release" }
                                     //  ?.filter { it?.master_id != 0 }
                                     //  ?.filter { !it?.barcode.isNullOrEmpty() }
                                     ?.filter { !it?.cover_image.isNullOrBlank() }
-                                    ?.distinctBy { getBarcodeFromList(it?.barcode) },
+                                    ?.distinctBy { getBarcodeFromList(it?.barcode) }
+                                    ?.sortedByDescending { it?.community?.have?.plus(it?.community?.want?:0)?:0 },
                                 isPageLoading = false
                             )
                         }

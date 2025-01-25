@@ -25,6 +25,7 @@ interface DiscogsApiService {
     @GET(Constants.Endpoints.Discogs.SEARCH)
     suspend fun searchVinyl(
         @Query("query") query: String?,
+        @Query("type") type: String="release",
         @Query("per_page") per_page: Int = 100,
         @Query("page") page: Int = 1,
         @Query("token") token: String = BuildConfig.API_KEY,

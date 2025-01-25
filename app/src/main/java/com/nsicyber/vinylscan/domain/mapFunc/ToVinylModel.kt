@@ -53,7 +53,8 @@ fun RecentlyViewedModel?.toSearchModel(): SearchResultItem {
         cover_image = this?.image.orEmpty(),
         type = null,
         barcode = null,
-        master_id = null
+        master_id = null,
+        community = null
     )
 }
 
