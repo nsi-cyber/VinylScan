@@ -115,7 +115,6 @@ fun CameraScreen(
     LaunchedEffect(state.onSuccess) {
         if (state.onSuccess && state.vinylModel != null) {
             navigateToDetail(state.vinylModel)
-
         }
     }
 
@@ -127,7 +126,6 @@ fun CameraScreen(
 
 
     BaseView(
-
         viewModel = cameraViewModel,
         isPageLoading = state.isPageLoading,
         content = {
@@ -145,7 +143,6 @@ fun CameraScreen(
                         modifier = Modifier.fillMaxSize()
                     )
                 }
-
 
                 Box(modifier = Modifier.fillMaxSize()) {
                     var columnSize by remember { mutableStateOf(IntSize.Zero) }
@@ -236,7 +233,6 @@ fun CameraScreen(
                             contentDescription = ""
                         )
                     }
-
 
                 }
             }

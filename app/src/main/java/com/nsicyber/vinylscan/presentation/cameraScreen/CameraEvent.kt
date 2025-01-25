@@ -1,5 +1,6 @@
 package com.nsicyber.vinylscan.presentation.cameraScreen
 
+import android.app.Activity
 import androidx.camera.core.ImageProxy
 
 sealed class CameraEvent {
@@ -10,5 +11,8 @@ sealed class CameraEvent {
     ) : CameraEvent()
 
     data object SetStateEmpty : CameraEvent()
+
+
+    data class ShowReviewDialog(val activity: Activity) : CameraEvent()
 
 }

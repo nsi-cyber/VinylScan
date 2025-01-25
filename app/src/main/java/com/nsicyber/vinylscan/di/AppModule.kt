@@ -1,18 +1,22 @@
 package com.nsicyber.vinylscan.di
 
+import android.content.Context
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.nsicyber.vinylscan.data.database.dao.VinylDao
+import com.nsicyber.vinylscan.data.datastore.AppPreferences
 import com.nsicyber.vinylscan.data.repository.DatabaseRepositoryImpl
 import com.nsicyber.vinylscan.data.repository.MediaPlayerRepositoryImpl
 import com.nsicyber.vinylscan.data.repository.MlKitRepositoryImpl
 import com.nsicyber.vinylscan.domain.repository.DatabaseRepository
 import com.nsicyber.vinylscan.domain.repository.MediaPlayerRepository
 import com.nsicyber.vinylscan.domain.repository.MlKitRepository
+import com.nsicyber.vinylscan.utils.ReviewManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
 
@@ -46,5 +50,17 @@ object AppModule {
     @Singleton
     fun provideMediaPlayerRepository(): MediaPlayerRepository {
         return MediaPlayerRepositoryImpl()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppPreferences(@ApplicationContext context: Context): AppPreferences {
+        return AppPreferences(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideReviewManager(): ReviewManager {
+        return ReviewManager()
     }
 }

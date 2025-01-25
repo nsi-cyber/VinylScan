@@ -79,6 +79,7 @@ fun DetailScreen(
 ) {
     val scope = rememberCoroutineScope()
     val detailState by detailViewModel.detailScreenState.collectAsState()
+    val cameraState by cameraViewModel.cameraState.collectAsState()
     val favoriteState by detailViewModel.isFavorite.collectAsState()
     val context = LocalContext.current
 
@@ -96,6 +97,11 @@ fun DetailScreen(
         detailViewModel.onEvent(DetailScreenEvent.LoadScreen(data?.id))
     }
 
+    LaunchedEffect(cameraState.shouldShowReview) {
+        if (cameraState.shouldShowReview == true) {
+            cameraViewModel.onEvent(CameraEvent.ShowReviewDialog(context as Activity))
+        }
+    }
 
     LaunchedEffect(detailState.onBottomSheetError) {
         if (detailState.onBottomSheetError == true) {

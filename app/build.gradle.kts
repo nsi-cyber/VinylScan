@@ -76,6 +76,8 @@ dependencies {
     implementation(libs.androidx.camera.core)
     implementation(libs.vision.common)
     implementation(libs.androidx.camera.view)
+    implementation("com.google.android.play:review:2.0.1")
+    implementation("com.google.android.play:review-ktx:2.0.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -103,7 +105,6 @@ dependencies {
     ksp(libs.dagger.hilt.compiler)
     implementation("androidx.room:room-runtime:2.6.1")
     implementation(libs.androidx.room.ktx)
-
     ksp(libs.androidx.room.compiler)
     annotationProcessor(libs.compiler)
     implementation(libs.androidx.work.runtime.ktx)

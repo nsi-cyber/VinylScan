@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.mlkit.vision.common.InputImage
 import com.nsicyber.vinylscan.common.ApiResult
+import com.nsicyber.vinylscan.data.datastore.AppPreferences
 import com.nsicyber.vinylscan.domain.mapFunc.toDatabase
 import com.nsicyber.vinylscan.domain.mapFunc.toVinylModel
 import com.nsicyber.vinylscan.domain.useCases.GetReleaseDetailUseCase
@@ -17,11 +18,13 @@ import com.nsicyber.vinylscan.domain.useCases.SearchBarcodeUseCase
 import com.nsicyber.vinylscan.presentation.components.BaseViewModel
 import com.nsicyber.vinylscan.presentation.components.SnackbarController
 import com.nsicyber.vinylscan.presentation.components.SnackbarEvent
+import com.nsicyber.vinylscan.utils.ReviewManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -36,20 +39,16 @@ class CameraViewModel @Inject constructor(
     private val insertRecentlyViewedUseCase: InsertRecentlyViewedUseCase,
     private val getReleaseDetailUseCase: GetReleaseDetailUseCase,
     private val searchBarcodeUseCase: SearchBarcodeUseCase,
+    private val appPreferences: AppPreferences,
+    private val reviewManager: ReviewManager
 ) : BaseViewModel() {
 
     private val _cameraState = MutableStateFlow(CameraState())
     val cameraState: StateFlow<CameraState> = _cameraState.asStateFlow()
 
-
     fun onEvent(event: CameraEvent) {
         when (event) {
-
-
-            is CameraEvent.TakePhoto -> takePhoto(
-                event.imageProxy
-            )
-
+            is CameraEvent.TakePhoto -> takePhoto(event.imageProxy)
             CameraEvent.SetStateEmpty -> {
                 updateUiState {
                     copy(
@@ -58,6 +57,7 @@ class CameraViewModel @Inject constructor(
                     )
                 }
             }
+            is CameraEvent.ShowReviewDialog -> reviewManager.initReviewFlow(event.activity)
         }
     }
 
@@ -85,16 +85,12 @@ class CameraViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.e("CameraViewModel", "Error analyzing image: ${e.message}")
             } finally {
-                //  updateUiState { copy(isPageLoading = false) }
                 imageProxy.close()
             }
         }
     }
 
-
-    private fun searchBarcode(
-        barcode: String?,
-    ) {
+    private fun searchBarcode(barcode: String?) {
         barcode?.let {
             viewModelScope.launch {
                 searchBarcodeUseCase(barcode).onStart {
@@ -106,31 +102,19 @@ class CameraViewModel @Inject constructor(
                         )
                     }
                 }.onEach { result ->
-
                     when (result) {
                         is ApiResult.Error -> {
                             showErrorMessage(this@CameraViewModel, result.message)
                             updateUiState {
-                                copy(
-                                    isPageLoading = false,
-
-                                    )
+                                copy(isPageLoading = false)
                             }
                         }
-
-
                         is ApiResult.Success -> {
                             getReleaseDiscogsDetail(
                                 releaseId = result.data?.results?.firstOrNull()?.id,
-
-                                )
-
-
+                            )
                         }
-
-                        null -> {
-
-                        }
+                        null -> {}
                     }
                 }.launchIn(this)
             }
@@ -138,56 +122,54 @@ class CameraViewModel @Inject constructor(
             updateUiState {
                 copy(
                     isPageLoading = false,
-                    onSuccess = false, vinylModel = null
+                    onSuccess = false,
+                    vinylModel = null
                 )
             }
         }
-
-
     }
 
-
-    private fun getReleaseDiscogsDetail(
-        releaseId: Int?,
-    ) {
-
+    private fun getReleaseDiscogsDetail(releaseId: Int?) {
         viewModelScope.launch {
             getReleaseDetailUseCase(releaseId).onStart {
                 updateUiState { copy(isPageLoading = true) }
             }.onEach { result ->
-
                 when (result) {
                     is ApiResult.Error -> {
                         showErrorMessage(this@CameraViewModel, result.message)
                         updateUiState {
-                            copy(
-                                isPageLoading = false,
-                            )
+                            copy(isPageLoading = false)
                         }
                     }
-
-
                     is ApiResult.Success -> {
                         insertRecentlyViewedUseCase(item = result.data.toDatabase()).collect()
-
-                        updateUiState {
-                            copy(
-                                isPageLoading = false,
-                                onSuccess = true,
-                                vinylModel = result.data?.toVinylModel()
-                            )
+                        appPreferences.incrementSuccessfulScanCount()
+                        
+                        val scanCount = appPreferences.successfulScanCount.first()
+                        if (scanCount % 5 == 0) {
+                            updateUiState {
+                                copy(
+                                    isPageLoading = false,
+                                    onSuccess = true,
+                                    vinylModel = result.data?.toVinylModel(),
+                                    shouldShowReview = true
+                                )
+                            }
+                        } else {
+                            updateUiState {
+                                copy(
+                                    isPageLoading = false,
+                                    onSuccess = true,
+                                    vinylModel = result.data?.toVinylModel(),
+                                    shouldShowReview = false
+                                )
+                            }
                         }
                     }
-
-                    null -> {
-
-
-                    }
+                    null -> {}
                 }
             }.launchIn(this)
         }
-
-
     }
 
     private fun updateUiState(block: CameraState.() -> CameraState) {
