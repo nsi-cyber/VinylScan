@@ -74,9 +74,9 @@ fun FlipGallery(imageUrls: List<String?>) {
                             )
 
                             if (targetAngle == 180f) {
-                                currentIndex = (currentIndex + 1) % imageUrls.size
-                            } else if (targetAngle == -180f) {
                                 currentIndex = (currentIndex - 1 + imageUrls.size) % imageUrls.size
+                            } else if (targetAngle == -180f) {
+                                currentIndex = (currentIndex + 1) % imageUrls.size
                             }
                             flipAngle.snapTo(0f)
                         }
@@ -114,9 +114,9 @@ fun FlipGallery(imageUrls: List<String?>) {
                 )
             } else {
                 val nextIndex = if (flipAngle.value > 0) {
-                    (currentIndex + 1) % imageUrls.size
-                } else {
                     (currentIndex - 1 + imageUrls.size) % imageUrls.size
+                } else {
+                    (currentIndex + 1) % imageUrls.size
                 }
                 AsyncImage(
                     model = imageUrls[nextIndex],

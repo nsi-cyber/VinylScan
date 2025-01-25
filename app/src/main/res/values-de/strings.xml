@@ -20,5 +20,6 @@
     <string name="no_favorites_yet">Noch keine Favoriten</string>
     <string name="recently_viewed">Kürzlich angesehen</string>
     <string name="search_for_vinyl_records">Nach Schallplatten suchen</string>
+    <string name="vinyl_format">Vinyl Format</string>
 
 </resources>

@@ -6,6 +6,7 @@ data class VinylModel(
     val vinylQuantity: Int? = 1,
     val artistName: String?,
     val genres: String?,
+    val formatType: String?,
     val styles: String?,
     val releaseDate: String?,
     val year: String?,

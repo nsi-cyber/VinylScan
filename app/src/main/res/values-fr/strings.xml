@@ -20,5 +20,6 @@
     <string name="no_favorites_yet">Pas encore de favoris</string>
     <string name="recently_viewed">Récemment consulté</string>
     <string name="search_for_vinyl_records">Rechercher des vinyles</string>
+    <string name="vinyl_format">Format Vinyle</string>
 
 </resources>

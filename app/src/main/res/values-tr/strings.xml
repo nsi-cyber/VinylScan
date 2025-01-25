@@ -20,5 +20,6 @@
     <string name="no_favorites_yet">Henüz favori yok</string>
     <string name="recently_viewed">Son görüntülenenler</string>
     <string name="search_for_vinyl_records">Plak ara</string>
+    <string name="vinyl_format">Plak Formatı</string>
 
 </resources>

@@ -1,6 +1,5 @@
 package com.nsicyber.vinylscan.domain.mapFunc
 
-import com.nsicyber.vinylscan.common.formatDate
 import com.nsicyber.vinylscan.data.database.entity.RecentlyViewedEntity
 import com.nsicyber.vinylscan.data.model.response.discogs.getReleaseDetail.GetReleaseDetailResponse
 import com.nsicyber.vinylscan.data.model.response.discogs.getReleaseDetail.ReleaseTracklist
@@ -32,7 +31,7 @@ fun GetReleaseDetailResponse?.toVinylModel(): VinylModel {
         images = this?.images?.map { it?.uri },
         catalog = this?.labels?.firstOrNull { !it?.catno.isNullOrEmpty() }?.catno.orEmpty(),
         minPrice = this?.lowest_price.toString(),
-        year = this?.year.toString()
+        year = this?.year.toString(), formatType = this?.formats?.firstOrNull()?.text.orEmpty()
     )
 }
 
@@ -40,7 +39,7 @@ fun GetReleaseDetailResponse?.toVinylModel(): VinylModel {
 fun GetReleaseDetailResponse?.toDatabase(): RecentlyViewedEntity {
     return RecentlyViewedEntity(
         id = this?.id ?: 0,
-        title = this?.artists_sort +" - "+this?.title.orEmpty(),
+        title = this?.artists_sort + " - " + this?.title.orEmpty(),
         releaseDate = this?.year.toString(),
         imageUrl = this?.images?.firstOrNull()?.uri.orEmpty()
     )

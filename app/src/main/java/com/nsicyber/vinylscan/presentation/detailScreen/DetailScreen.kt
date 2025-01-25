@@ -264,6 +264,12 @@ fun DetailScreen(
                             Image(
                                 imageVector = Icons.Default.Star,
                                 contentDescription = "",
+                                colorFilter = ColorFilter.tint(Color.Black)
+                            )
+                            Image(
+                                modifier = Modifier.padding(4.dp),
+                                imageVector = Icons.Default.Star,
+                                contentDescription = "",
                                 colorFilter = if (favoriteState == false) ColorFilter.tint(
                                     Color.White
                                 ) else ColorFilter.tint(Color.Black)
@@ -305,413 +311,442 @@ fun DetailScreen(
                 }
 
 
+                Column(
+                    modifier = Modifier
+                        .background(Color.Black), verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(start = 16.dp, bottom = 4.dp)
+                    ) {
+                        data?.title?.takeIf { !it.isNullOrBlank() }?.let {
+                            Text(
+                                text = it,
+                                color = Color.White,
+                                fontSize = 32.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                                lineHeight = 32.sp,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                        data?.artistName?.takeIf { !it.isNullOrBlank() }?.let {
+                            Text(
+                                lineHeight = 24.sp,
+                                text = it,
+                                color = Color.Gray,
+                                fontSize = 24.sp,
 
-                Column(modifier = Modifier.padding(start = 16.dp, bottom = 4.dp)) {
-                    data?.title?.takeIf { !it.isNullOrBlank() }?.let {
-                        Text(
-                            text = it,
-                            color = Color.White,
-                            fontSize = 32.sp,
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Normal,
-                            lineHeight = 32.sp,
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
                     }
-                    data?.artistName?.takeIf { !it.isNullOrBlank() }?.let {
-                        Text(
-                            lineHeight = 24.sp,
-                            text = it,
-                            color = Color.Gray,
-                            fontSize = 24.sp,
-
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Normal,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                }
-                data?.catalog?.takeIf { !it.isNullOrBlank() }?.let {
-                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 16.dp),
-                            text = stringResource(R.string.catalog),
-                            color = Color.Gray,
-                            fontSize = 16.sp,
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Normal,
-                        )
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 16.dp),
-                            text = it,
-                            color = Color.White,
-                            fontSize = 18.sp,
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Normal,
-                        )
-                    }
-
-                }
-                data?.vinylQuantity?.let {
-                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 16.dp),
-                            text = stringResource(R.string.lp_count),
-                            color = Color.Gray,
-                            fontSize = 16.sp,
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Normal,
-                        )
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 16.dp),
-                            text = it.toString(),
-                            color = Color.White,
-                            fontSize = 18.sp,
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Normal,
-                        )
-                    }
-
-                }
-
-                data?.genres?.takeIf { !it.isNullOrEmpty() }?.let {
-                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(
-                            text = stringResource(R.string.genre),
-                            color = Color.Gray,
-                            fontSize = 16.sp,
-
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Normal,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 16.dp),
-                        )
-                        Text(
-                            text = it,
-                            color = Color.White,
-                            fontSize = 18.sp,
-                            lineHeight = 18.sp,
-
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Normal,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 16.dp),
-                        )
+                    data?.catalog?.takeIf { !it.isNullOrBlank() }?.let {
+                        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp),
+                                text = stringResource(R.string.catalog),
+                                color = Color.Gray,
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp),
+                                text = it,
+                                color = Color.White,
+                                fontSize = 18.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                            )
+                        }
 
                     }
-                }
-
-                data?.releaseDate?.takeIf { !it.isNullOrBlank() }?.let {
-                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 16.dp),
-                            text = stringResource(R.string.release_date),
-                            color = Color.Gray,
-                            fontSize = 16.sp,
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Normal,
-                        )
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 16.dp),
-                            text = formatDate(it),
-                            color = Color.White,
-                            fontSize = 18.sp,
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Normal,
-                        )
-                    }
-
-                }
-
-                data?.styles?.takeIf { !it.isNullOrEmpty() }?.let {
-                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(
-                            text = stringResource(R.string.style),
-                            color = Color.Gray,
-                            fontSize = 16.sp,
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Normal,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 16.dp),
-                        )
-
-                        Text(
-                            text = it,
-                            color = Color.White,
-                            fontSize = 18.sp,
-                            lineHeight = 18.sp,
-
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Normal,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 16.dp),
-                        )
+                    data?.vinylQuantity?.let {
+                        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp),
+                                text = stringResource(R.string.lp_count),
+                                color = Color.Gray,
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp),
+                                text = it.toString(),
+                                color = Color.White,
+                                fontSize = 18.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                            )
+                        }
 
                     }
-                }
-                data?.totalTime?.takeIf { !it.isNullOrEmpty() }?.let {
-                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(
-                            text = stringResource(R.string.total_time),
-                            color = Color.Gray,
-                            fontSize = 16.sp,
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Normal,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 16.dp),
-                        )
-
-                        Text(
-                            text = it,
-                            color = Color.White,
-                            fontSize = 18.sp,
-                            lineHeight = 18.sp,
-
-                            textAlign = TextAlign.Start,
-                            fontWeight = FontWeight.Normal,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 16.dp),
-                        )
+                    data?.formatType?.takeIf { it.isNotEmpty() }?.let {
+                        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp),
+                                text = stringResource(R.string.vinyl_format),
+                                color = Color.Gray,
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp),
+                                text = it.toString(),
+                                color = Color.White,
+                                fontSize = 18.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                            )
+                        }
 
                     }
-                }
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    data?.tracks?.takeIf { !it.isNullOrEmpty() }
-                        ?.let {
+                    data?.genres?.takeIf { !it.isNullOrEmpty() }?.let {
+                        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Text(
+                                text = stringResource(R.string.genre),
+                                color = Color.Gray,
+                                fontSize = 16.sp,
 
-                            repeat(it?.size ?: 0) { trackIndex ->
-                                Row(
-                                    modifier = Modifier
-                                        .clip(RoundedCornerShape(20.dp))
-                                        .clickable {
-                                            detailViewModel.onEvent(DetailScreenEvent.SetStateEmpty)
-                                            mediaPlayerViewModel.stopMediaPlayer()
-                                            bottomSheetType.value = BottomSheetType.PREVIEW
-                                            detailViewModel.onEvent(
-                                                DetailScreenEvent.LoadTrack(
-                                                    query = "${
-                                                        it?.get(
-                                                            trackIndex
-                                                        )?.artistName
-                                                    } ${it?.get(trackIndex)?.title}"
-                                                )
-                                            )
-                                            scope.launch {
-                                                bottomSheetState.bottomSheetState.expand()
-                                            }
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp),
+                            )
+                            Text(
+                                text = it,
+                                color = Color.White,
+                                fontSize = 18.sp,
+                                lineHeight = 18.sp,
 
-                                        }
-                                        .padding(horizontal = 16.dp, vertical = 4.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Image(
-                                        modifier = Modifier.size(32.dp),
-                                        painter = painterResource(R.drawable.ic_play),
-                                        colorFilter = ColorFilter.tint(Color.White),
-                                        contentDescription = ""
-                                    )
-                                    Column(
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp),
+                            )
+
+                        }
+                    }
+                    data?.releaseDate?.takeIf { !it.isNullOrBlank() }?.let {
+                        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp),
+                                text = stringResource(R.string.release_date),
+                                color = Color.Gray,
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp),
+                                text = formatDate(it),
+                                color = Color.White,
+                                fontSize = 18.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                            )
+                        }
+
+                    }
+                    data?.styles?.takeIf { !it.isNullOrEmpty() }?.let {
+                        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Text(
+                                text = stringResource(R.string.style),
+                                color = Color.Gray,
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp),
+                            )
+
+                            Text(
+                                text = it,
+                                color = Color.White,
+                                fontSize = 18.sp,
+                                lineHeight = 18.sp,
+
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp),
+                            )
+
+                        }
+                    }
+                    data?.totalTime?.takeIf { !it.isNullOrEmpty() }?.let {
+                        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Text(
+                                text = stringResource(R.string.total_time),
+                                color = Color.Gray,
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp),
+                            )
+
+                            Text(
+                                text = it,
+                                color = Color.White,
+                                fontSize = 18.sp,
+                                lineHeight = 18.sp,
+
+                                textAlign = TextAlign.Start,
+                                fontWeight = FontWeight.Normal,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 16.dp),
+                            )
+
+                        }
+                    }
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        data?.tracks?.takeIf { !it.isNullOrEmpty() }
+                            ?.let {
+
+                                repeat(it?.size ?: 0) { trackIndex ->
+                                    Row(
                                         modifier = Modifier
+                                            .clip(RoundedCornerShape(20.dp))
+                                            .clickable {
+                                                detailViewModel.onEvent(DetailScreenEvent.SetStateEmpty)
+                                                mediaPlayerViewModel.stopMediaPlayer()
+                                                bottomSheetType.value = BottomSheetType.PREVIEW
+                                                detailViewModel.onEvent(
+                                                    DetailScreenEvent.LoadTrack(
+                                                        query = "${
+                                                            it?.get(
+                                                                trackIndex
+                                                            )?.albumName
+                                                        } ${it?.get(trackIndex)?.title}"
+                                                    )
+                                                )
+                                                scope.launch {
+                                                    bottomSheetState.bottomSheetState.expand()
+                                                }
+
+                                            }
+                                            .padding(horizontal = 16.dp, vertical = 4.dp),
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                        verticalAlignment = Alignment.CenterVertically
                                     ) {
-                                        it?.get(trackIndex)?.position?.takeIf { !it.isNullOrBlank() }
-                                            ?.let { duration ->
-                                                Text(
-                                                    lineHeight = 24.sp,
-                                                    text = duration,
-                                                    color = Color.Gray,
-                                                    fontSize = 14.sp,
-                                                    textAlign = TextAlign.Start,
-                                                    fontWeight = FontWeight.Bold,
-                                                    modifier = Modifier.fillMaxWidth()
-                                                )
-                                            }
-
-                                        Text(
-                                            text = it?.get(trackIndex)?.title.orEmpty(),
-                                            color = Color.White,
-                                            fontSize = 20.sp,
-                                            lineHeight = 20.sp,
-
-                                            textAlign = TextAlign.Start,
-                                            fontWeight = FontWeight.Normal,
-                                            modifier = Modifier.fillMaxWidth()
+                                        Image(
+                                            modifier = Modifier.size(32.dp),
+                                            painter = painterResource(R.drawable.ic_play),
+                                            colorFilter = ColorFilter.tint(Color.White),
+                                            contentDescription = ""
                                         )
+                                        Column(
+                                            modifier = Modifier
+                                        ) {
+                                            it?.get(trackIndex)?.position?.takeIf { !it.isNullOrBlank() }
+                                                ?.let { duration ->
+                                                    Text(
+                                                        lineHeight = 24.sp,
+                                                        text = duration,
+                                                        color = Color.Gray,
+                                                        fontSize = 14.sp,
+                                                        textAlign = TextAlign.Start,
+                                                        fontWeight = FontWeight.Bold,
+                                                        modifier = Modifier.fillMaxWidth()
+                                                    )
+                                                }
 
-                                        it?.get(trackIndex)?.duration?.takeIf { !it.isNullOrBlank() }
-                                            ?.let { duration ->
-                                                Text(
-                                                    lineHeight = 24.sp,
-                                                    text = duration,
-                                                    color = Color.Gray,
-                                                    fontSize = 14.sp,
-                                                    textAlign = TextAlign.Start,
-                                                    fontWeight = FontWeight.Normal,
-                                                    modifier = Modifier.fillMaxWidth()
-                                                )
-                                            }
+                                            Text(
+                                                text = it?.get(trackIndex)?.title.orEmpty(),
+                                                color = Color.White,
+                                                fontSize = 20.sp,
+                                                lineHeight = 20.sp,
+
+                                                textAlign = TextAlign.Start,
+                                                fontWeight = FontWeight.Normal,
+                                                modifier = Modifier.fillMaxWidth()
+                                            )
+
+                                            it?.get(trackIndex)?.duration?.takeIf { !it.isNullOrBlank() }
+                                                ?.let { duration ->
+                                                    Text(
+                                                        lineHeight = 24.sp,
+                                                        text = duration,
+                                                        color = Color.Gray,
+                                                        fontSize = 14.sp,
+                                                        textAlign = TextAlign.Start,
+                                                        fontWeight = FontWeight.Normal,
+                                                        modifier = Modifier.fillMaxWidth()
+                                                    )
+                                                }
+                                        }
                                     }
+
+                                    Box(
+                                        modifier = Modifier
+                                            .padding(horizontal = 16.dp, vertical = 2.dp)
+                                            .fillMaxWidth()
+                                            .height(1.dp)
+                                            .background(Color.White.copy(alpha = 0.1f))
+                                    )
+
+
                                 }
+                            }
+                    }
 
-                                Box(
+
+                    Column {
+                        Text(
+                            text = stringResource(R.string.listen_on),
+                            color = Color.White,
+                            fontSize = 18.sp,
+                            textAlign = TextAlign.Start,
+                            fontWeight = FontWeight.Normal,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 16.dp),
+                        )
+                        Row {
+
+                            Column(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(20.dp))
+                                    .clickable {
+                                        scope.launch {
+                                            openExternalMusicLinkFromGoogle(
+                                                context = context,
+                                                query = ("${data?.artistName}+${data?.title}").replace(
+                                                    "\\s".toRegex(),
+                                                    "+"
+                                                ),
+                                                type = ExternalWebsites.SPOTIFY
+                                            )
+                                        }
+
+                                    }
+                                    .fillMaxWidth()
+                                    .padding(16.dp)
+                                    .weight(0.33f)
+                                    .aspectRatio(4 / 3f)
+                            ) {
+                                Image(
                                     modifier = Modifier
-                                        .padding(horizontal = 16.dp, vertical = 2.dp)
-                                        .fillMaxWidth()
-                                        .height(1.dp)
-                                        .background(Color.White.copy(alpha = 0.1f))
+                                        .fillMaxSize()
+                                        .weight(1f),
+                                    painter = painterResource(R.drawable.icon_spotify),
+                                    contentDescription = ""
                                 )
+                                Text(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    text = stringResource(R.string.spotify),
+                                    color = Color.White,
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Normal,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
 
+                            Column(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(20.dp))
+                                    .clickable {
+                                        scope.launch {
+                                            openExternalMusicLinkFromGoogle(
+                                                context = context,
+                                                query = ("${data?.artistName}+${data?.title}").replace(
+                                                    "\\s".toRegex(),
+                                                    "+"
+                                                ),
+                                                type = ExternalWebsites.APPLE_MUSIC
+                                            )
+                                        }
 
+                                    }
+                                    .fillMaxWidth()
+                                    .padding(16.dp)
+                                    .weight(0.33f)
+                                    .aspectRatio(4 / 3f)
+                            ) {
+                                Image(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .weight(1f),
+                                    painter = painterResource(R.drawable.icon_apple_music),
+                                    contentDescription = ""
+                                )
+                                Text(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    text = stringResource(R.string.apple_music),
+                                    color = Color.White,
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Normal,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                            Column(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(20.dp))
+                                    .clickable {
+                                        scope.launch {
+                                            openExternalMusicLinkFromGoogle(
+                                                context = context,
+                                                query = ("${data?.artistName}+${data?.title}").replace(
+                                                    "\\s".toRegex(),
+                                                    "+"
+                                                ),
+                                                type = ExternalWebsites.YOUTUBE_MUSIC
+                                            )
+                                        }
+
+                                    }
+                                    .fillMaxWidth()
+                                    .padding(16.dp)
+                                    .weight(0.33f)
+                                    .aspectRatio(4 / 3f)
+                            ) {
+                                Image(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .weight(1f),
+                                    painter = painterResource(R.drawable.icon_youtube_music),
+                                    contentDescription = ""
+                                )
+                                Text(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    text = stringResource(R.string.youtube_music),
+                                    color = Color.White,
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Normal,
+                                    textAlign = TextAlign.Center
+                                )
                             }
                         }
-                }
 
-
-                Column {
-                    Text(
-                        text = stringResource(R.string.listen_on),
-                        color = Color.White,
-                        fontSize = 18.sp,
-                        textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.Normal,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp),
-                    )
-                    Row {
-
-                        Column(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(20.dp))
-                                .clickable {
-                                    scope.launch {
-                                        openExternalMusicLinkFromGoogle(
-                                            context = context,
-                                            query = ("${data?.artistName}+${data?.title}").replace(
-                                                "\\s".toRegex(),
-                                                "+"
-                                            ),
-                                            type = ExternalWebsites.SPOTIFY
-                                        )
-                                    }
-
-                                }
-                                .fillMaxWidth()
-                                .padding(16.dp)
-                                .weight(0.33f)
-                                .aspectRatio(4 / 3f)
-                        ) {
-                            Image(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .weight(1f),
-                                painter = painterResource(R.drawable.icon_spotify),
-                                contentDescription = ""
-                            )
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = stringResource(R.string.spotify),
-                                color = Color.White,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Normal,
-                                textAlign = TextAlign.Center
-                            )
-                        }
-
-                        Column(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(20.dp))
-                                .clickable {
-                                    scope.launch {
-                                        openExternalMusicLinkFromGoogle(
-                                            context = context,
-                                            query = ("${data?.artistName}+${data?.title}").replace(
-                                                "\\s".toRegex(),
-                                                "+"
-                                            ),
-                                            type = ExternalWebsites.APPLE_MUSIC
-                                        )
-                                    }
-
-                                }
-                                .fillMaxWidth()
-                                .padding(16.dp)
-                                .weight(0.33f)
-                                .aspectRatio(4 / 3f)
-                        ) {
-                            Image(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .weight(1f),
-                                painter = painterResource(R.drawable.icon_apple_music),
-                                contentDescription = ""
-                            )
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = stringResource(R.string.apple_music),
-                                color = Color.White,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Normal,
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                        Column(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(20.dp))
-                                .clickable {
-                                    scope.launch {
-                                        openExternalMusicLinkFromGoogle(
-                                            context = context,
-                                            query = ("${data?.artistName}+${data?.title}").replace(
-                                                "\\s".toRegex(),
-                                                "+"
-                                            ),
-                                            type = ExternalWebsites.YOUTUBE_MUSIC
-                                        )
-                                    }
-
-                                }
-                                .fillMaxWidth()
-                                .padding(16.dp)
-                                .weight(0.33f)
-                                .aspectRatio(4 / 3f)
-                        ) {
-                            Image(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .weight(1f),
-                                painter = painterResource(R.drawable.icon_youtube_music),
-                                contentDescription = ""
-                            )
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = stringResource(R.string.youtube_music),
-                                color = Color.White,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Normal,
-                                textAlign = TextAlign.Center
-                            )
-                        }
                     }
-
                 }
 
 

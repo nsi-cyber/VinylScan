@@ -20,4 +20,5 @@
     <string name="no_favorites_yet">No favorites yet</string>
     <string name="recently_viewed">Recently viewed</string>
     <string name="search_for_vinyl_records">Search for vinyl records</string>
+    <string name="vinyl_format">Vinyl Format</string>
 </resources>
