@@ -7,5 +7,5 @@ data class FavoriteScreenState(
     val isPageLoading: Boolean = false,
     val favoriteVinyls: List<FavoriteVinylModel>? = null,
     val onSuccess: Boolean = false,
-    val vinylModel: VinylModel?=null
+    val vinylModel: VinylModel? = null
 )

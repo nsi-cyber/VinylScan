@@ -105,7 +105,7 @@ class FavoriteViewModel @Inject constructor(
                     copy(
                         isPageLoading = false,
                         favoriteVinyls = favorites,
-                     )
+                    )
                 }
             }
         }
