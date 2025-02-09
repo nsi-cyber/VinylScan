@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nsicyber.vinylscan.common.ApiResult
 import com.nsicyber.vinylscan.common.DaoResult
-import com.nsicyber.vinylscan.domain.mapFunc.getBarcodeFromList
 import com.nsicyber.vinylscan.domain.mapFunc.toDatabase
 import com.nsicyber.vinylscan.domain.mapFunc.toVinylModel
 import com.nsicyber.vinylscan.domain.model.toModel
@@ -186,10 +185,12 @@ constructor(
                                     //  ?.filter { it?.master_id != 0 }
                                     //  ?.filter { !it?.barcode.isNullOrEmpty() }
                                     ?.filter { !it?.cover_image.isNullOrBlank() }
+                                    ?.filter { it?.formats?.any { it?.name == "Vinyl" } == true }
                                     ?.sortedByDescending {
                                         (it?.community?.have ?: 0) + (it?.community?.want ?: 0)
                                     }
-                                    ?.distinctBy { getBarcodeFromList(it?.barcode) },
+                                // ?.distinctBy { getBarcodeFromList(it?.barcode) }
+                                ,
                                 isPageLoading = false
                             )
                         }

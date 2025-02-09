@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.nsicyber.vinylscan.data.database.entity.FavoriteVinylEntity
 import com.nsicyber.vinylscan.data.database.entity.RecentlyViewedEntity
 
-@Database(entities = [RecentlyViewedEntity::class, FavoriteVinylEntity::class], version = 1)
+@Database(entities = [RecentlyViewedEntity::class, FavoriteVinylEntity::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun databaseDao(): VinylDao
 }

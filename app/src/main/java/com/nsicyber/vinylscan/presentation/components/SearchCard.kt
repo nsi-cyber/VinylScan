@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -37,11 +38,9 @@ fun SearchCard(
             .clickable {
                 onItemClick(data)
             }
-            .height(100.dp)
+
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
-
-
+            .padding(vertical = 8.dp), verticalAlignment = Alignment.CenterVertically
     ) {
 
 
@@ -50,6 +49,7 @@ fun SearchCard(
             contentDescription = data?.title,
             contentScale = ContentScale.Crop,
             modifier = Modifier
+                .height(100.dp)
                 .aspectRatio(1f)
                 .shadow(5.dp, RoundedCornerShape(10.dp))
                 .clip(
@@ -67,7 +67,6 @@ fun SearchCard(
             Text(
                 text = data?.title.orEmpty(),
                 color = Color.White,
-                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 fontSize = 18.sp,
                 textAlign = TextAlign.Start,
@@ -82,6 +81,18 @@ fun SearchCard(
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Medium,
             )
+            data?.formats?.firstOrNull()?.text?.let {
+                Text(
+                    text = it,
+                    color = Color.Gray,
+                    fontSize = 12.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Medium,
+                )
+            }
+
         }
 
 

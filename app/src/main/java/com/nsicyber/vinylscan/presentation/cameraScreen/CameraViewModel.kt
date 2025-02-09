@@ -57,6 +57,7 @@ class CameraViewModel @Inject constructor(
                     )
                 }
             }
+
             is CameraEvent.ShowReviewDialog -> reviewManager.initReviewFlow(event.activity)
         }
     }
@@ -109,11 +110,13 @@ class CameraViewModel @Inject constructor(
                                 copy(isPageLoading = false)
                             }
                         }
+
                         is ApiResult.Success -> {
                             getReleaseDiscogsDetail(
                                 releaseId = result.data?.results?.firstOrNull()?.id,
                             )
                         }
+
                         null -> {}
                     }
                 }.launchIn(this)
@@ -141,10 +144,11 @@ class CameraViewModel @Inject constructor(
                             copy(isPageLoading = false)
                         }
                     }
+
                     is ApiResult.Success -> {
                         insertRecentlyViewedUseCase(item = result.data.toDatabase()).collect()
                         appPreferences.incrementSuccessfulScanCount()
-                        
+
                         val scanCount = appPreferences.successfulScanCount.first()
                         if (scanCount % 5 == 0) {
                             updateUiState {
@@ -166,6 +170,7 @@ class CameraViewModel @Inject constructor(
                             }
                         }
                     }
+
                     null -> {}
                 }
             }.launchIn(this)

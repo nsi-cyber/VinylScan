@@ -26,9 +26,11 @@ object DatabaseModule {
             appContext,
             AppDatabase::class.java,
             "database",
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
 
     @Provides
-    fun provideCocktailDao(database: AppDatabase): VinylDao = database.databaseDao()
+    fun provideVinylDao(database: AppDatabase): VinylDao = database.databaseDao()
 
 }

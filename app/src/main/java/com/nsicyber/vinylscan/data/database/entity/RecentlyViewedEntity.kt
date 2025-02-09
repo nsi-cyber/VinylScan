@@ -10,5 +10,6 @@ data class RecentlyViewedEntity(
     val title: String,
     val imageUrl: String,
     val releaseDate: String,
+    val format: String,
     val timestamp: Long = System.currentTimeMillis()
 )

@@ -1,6 +1,7 @@
 package com.nsicyber.vinylscan.domain.mapFunc
 
 import com.nsicyber.vinylscan.data.database.entity.RecentlyViewedEntity
+import com.nsicyber.vinylscan.data.model.response.discogs.getReleaseDetail.Format
 import com.nsicyber.vinylscan.data.model.response.discogs.getReleaseDetail.GetReleaseDetailResponse
 import com.nsicyber.vinylscan.data.model.response.discogs.getReleaseDetail.ReleaseTracklist
 import com.nsicyber.vinylscan.data.model.response.discogs.getSearch.SearchResultItem
@@ -42,7 +43,8 @@ fun GetReleaseDetailResponse?.toDatabase(): RecentlyViewedEntity {
         id = this?.id ?: 0,
         title = this?.artists_sort + " - " + this?.title.orEmpty(),
         releaseDate = this?.year.toString(),
-        imageUrl = this?.images?.firstOrNull()?.uri.orEmpty()
+        imageUrl = this?.images?.firstOrNull()?.uri.orEmpty(),
+        format = this?.formats?.firstOrNull()?.text.orEmpty()
     )
 }
 
@@ -55,7 +57,15 @@ fun RecentlyViewedModel?.toSearchModel(): SearchResultItem {
         type = null,
         barcode = null,
         master_id = null,
-        community = null
+        community = null,
+        formats = listOf(
+            Format(
+                text = this?.format,
+                descriptions = null,
+                name = null,
+                qty = null
+            )
+        )
     )
 }
 
